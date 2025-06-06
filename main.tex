@@ -1,0 +1,98 @@
+%%%%%%%%%%%%
+%% Please rename this main.tex file and the output PDF to
+%% [lastname_firstname_graduationyear]
+%% before submission.
+%%%%%%%%%%%%
+
+\documentclass[12pt]{caltech_thesis}
+\usepackage[hyphens]{url}
+\usepackage{lipsum}
+\usepackage{graphicx}
+
+\usepackage{todonotes}
+
+%% Tentative: newtx for better-looking Times
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{newtxtext,newtxmath}
+
+% Must use biblatex to produce the Published Contents and Contributions, per-chapter bibliography (if desired), etc.
+\usepackage[
+    backend=biber,natbib,
+    % IMPORTANT: load a style suitable for your discipline
+    style=authoryear
+]{biblatex}
+
+% Name of your .bib file(s)
+\addbibresource{example.bib}
+\addbibresource{ownpubs.bib}
+
+\begin{document}
+
+% Do remember to remove the square bracket!
+\title{Adversarial studies of discrete adversarial attacks for Jet-Flavour Tagging Algorithms within the CMS Experiment}
+\author{Martin Waletzko}
+
+\faculty{Physics Institute III A}      % Faculty name
+\university{RWTH Aachen University}    % Institution name
+\address{Aachen, Germany}                     % Institution address
+%\unilogo{caltech.png}                                 % Institution logo
+\copyyear{2025}  % Year (of graduation) on diploma
+\copymonth{November}
+
+\supervisor{Prof.\ Dr.\ rer.\ nat.\ Alexander Schmidt\\Physics Institute III A}
+\secondexaminer{null}
+
+\orcid{[Author ORCID]}
+
+%% IMPORTANT: Select ONE of the rights statement below.
+\rightsstatement{All rights reserved\todo[size=\footnotesize]{Choose one from the choices in the source code!! And delete this \texttt{todo} when you're done that. :-)}}
+% \rightsstatement{All rights reserved except where otherwise noted}
+% \rightsstatement{Some rights reserved. This thesis is distributed under a [name license, e.g., ``Creative Commons Attribution-NonCommercial-ShareAlike License'']}
+
+%% You can add "[logo]" to the maketitle command if you'd like the Caltech logo to appear on your title page
+\maketitle
+%\maketitle[logo]
+
+\begin{acknowledgements} 	 
+   [Add acknowledgements here. If you do not wish to add any to your thesis, you may simply add a blank titled Acknowledgements page.]
+\end{acknowledgements}
+
+\begin{abstract}
+   [This abstract must provide a succinct and informative condensation of your work. Candidates are welcome to prepare a lengthier abstract for inclusion in the dissertation, and provide a shorter one in the CaltechTHESIS record.]
+\end{abstract}
+
+\tableofcontents
+\listoffigures
+\listoftables
+\printnomenclature
+
+\mainmatter
+
+% Introduction
+\include{thesis/introduction.tex}
+
+% Chapter 1
+\include{thesis/standard_model.tex}
+
+% Chapter 2
+\include{thesis/machine_learning.tex}
+
+% Chapter 3
+\include{thesis/methodology.tex}
+
+% Chapter 4
+\include{thesis/adversarial_studies}
+
+% Chapter 5
+\include{thesis/conclusion}
+
+\printbibliography[heading=bibintoc]
+
+\appendix
+
+\chapter{Appendix}
+\chapter{Consent Form}
+
+
+\end{document}
