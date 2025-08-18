@@ -1,3 +1,21 @@
 \chapter{Conclusion}
 
-\lipsum[1-2]
+This thesis has introduced PIP, specifically designed for discrete features in particle physics applications. Applied to the DeepJet flavour tagging algorithm used in CMS, this work demonstrates how to develop a robustness against vulnerabilities in state-of-the-art machine learning models that were previously dismissed.
+
+The key innovation of PIP lies in its probabilistic approach to discrete perturbations. Unlike continuous attack methods that generate non-physical fractional values when applied to integer features, PIP uses gradient information to probabilistically decide whether to increment or decrement discrete features by integer units. This ensures all perturbations remain physically meaningful while effectively probing model robustness. A tunable sharpness parameter controls the attack's aggressiveness, allowing researchers to balance effectiveness with stealth considerations.
+
+The investigation of PIP-PGD attacks reveals synergistic effects exceeding the impact of either method alone. This finding demonstrates that attacking both continuous and discrete features simultaneously exploits complementary vulnerabilities, leading to more severe performance degradation than expected from individual attack impacts.
+
+Adversarial training experiments show that models trained against only one attack type exhibit limited transferability to other attack types, indicating attack-specific overfitting. However, adversarial training with PIP-PGD attacks provides balanced robustness across all tested scenarios while maintaining nominal performance within 1-2\% of baseline levels. This combined training approach offers the most comprehensive protection against both continuous and discrete adversarial perturbations.
+
+Beyond the specific application to DeepJet, this work contributes to the broader field of adversarial machine learning by suggesting a general framework for attacking discrete features that can be adapted to other scientific domains. The successful combination of continuous and discrete attacks demonstrates the importance of considering multiple perturbation modalities in robustness evaluation, particularly relevant for scientific applications involving mixed data types.
+
+\newpage
+
+\section*{Outlook}
+
+While PIP offers a robust method that can be applied together with existing continuous attack methods, several improvements could enhance its effectiveness. The current implementation does not account for relative feature scaling in the same way that PGD uses feature-specific scaling factors. Incorporating relative scaling based on feature importance or sensitivity could further improve attack effectiveness while maintaining physical realism.
+
+The synergy between PGD and PIP could stem from both methods acting on simple gradient information that are generally aligned. However, it remains uncertain whether PIP works equally well with other more sophisticated attack methods. Future research should explore integration with advanced continuous attacks to reveal new synergistic opportunities.
+
+Beyond methodological improvements, PIP could be extended to other scientific machine learning applications where discrete features play important roles. Areas such as astronomy, materials science, and bioinformatics often involve mixed data types that could benefit from similar robustness analysis approaches. Additionally, incorporating domain-specific knowledge about particle physics could create more realistic and targeted adversarial perturbations, improving both attack effectiveness and physical interpretability.

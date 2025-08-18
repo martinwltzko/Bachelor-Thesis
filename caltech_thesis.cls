@@ -1,25 +1,76 @@
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesClass{caltech_thesis}
-              [2021/05/05 v0.4 Caltech thesis class]
+\ProvidesClass{caltech_thesis}[2021/05/05 v0.4 Caltech thesis class]
 
 % Load memoir
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
 \ProcessOptions\relax
+
 \LoadClass[oneside,12pt]{memoir}
-
 \RequirePackage{etoolbox}
-
-% Overleaf 28 Jan: Page geometry
-\RequirePackage[letterpaper,top=1in,bottom=1in,left=1.5in,right=1.5in,headsep=\dimexpr 0.25in-1em,marginparwidth=1.25in]{geometry}
-
-% Page style
-\makeoddhead{headings}{}{}{\thepage}
-\makeevenhead{headings}{}{}{\thepage}
-
 \RequirePackage{graphicx}
 
+% Overleaf 28 Jan: Page geometry
+\RequirePackage[letterpaper,
+    top=1in,
+    bottom=1in,
+    left=1.25in,
+    right=1.0in,
+    headsep=\dimexpr 0.25in-1em,
+    marginparwidth=1.25in
+]{geometry}
+
+% Page style
+\RequirePackage{fancyhdr}
+% Modern font
+%\usepackage[sfdefault,light]{FiraSans}
+\usepackage{helvet}
+% Alternative modern fonts:
+% \RequirePackage{tgpagella} % TeX Gyre Pagella (serif, softer look)
+% \RequirePackage{tgheros}   % TeX Gyre Heros (sans-serif)
+\renewcommand{\rmdefault}{qpl} % Optional: sans-serif for main text
+
+\Spacing{1.1}
+
+\makeatletter
+\makechapterstyle{hangnumclean}{%
+    % Basis: hangnum, aber ohne Nummer im Rand
+    \chapterstyle{hangnum}%
+    \setlength{\beforechapskip}{0pt}%
+    \setlength{\midchapskip}{0pt}%
+    \setlength{\afterchapskip}{0pt}%
+    \renewcommand{\printchaptername}{}%
+    \renewcommand{\chapternamenum}{}%
+    \renewcommand{\printchapternum}{}% Nummer vollständig unterdrücken
+    \renewcommand{\afterchapternum}{}% keinen Extraabstand nach (nicht vorhandener) Nummer
+    % Behalte deine Titelgestaltung:
+    \renewcommand{\printchaptertitle}[1]{\chaptitlefont\MakeUppercase{##1}}%
+  }
+\chapterstyle{hangnumclean}
+\makeatother
+
+
+% Safe chapter title storage
+\newcommand{\thechaptertitle}{}
+\renewcommand{\chaptermark}[1]{%
+  \markboth{#1}{}%
+  \gdef\thechaptertitle{#1}%
+}
+
+\fancypagestyle{fancy}{
+    \fancyhf{}
+    \fancyhead[L]{%
+      \ifnum\value{chapter}>0
+        Chapter \thechapter: \thechaptertitle
+      \fi
+    }
+    \fancyhead[R]{\thepage}
+    \renewcommand{\headrulewidth}{0.4pt}
+}
+\pagestyle{fancy}
+
+
 %% Overleaf 24 Jan: Formatting of ToC and lists
-\setcounter{tocdepth}{1}
+\setcounter{tocdepth}{2}
 \let\listoffigurestables\listoffigures
 \appto{\tableofcontents}{\clearpage}
 \appto{\listoffigurestables}{\clearpage}
@@ -53,12 +104,22 @@
 \newcommand{\formatchapternumber}[1]{%
   \IsInteger{#1}{\uppercase\expandafter{\romannumeral #1\relax}}{#1}%
 }
-\renewcommand{\chapternumberline}[1]{\chaptername\space\formatchapternumber{#1}:\space}
+\renewcommand{\chapternumberline}[1]{\formatchapternumber{#1}:\space}
 \patchcmd{\cftchapterleader}{\bfseries}{\normalfont}{}{}
-\renewcommand{\cftchapterfont}{\normalfont}
+
+% font
+\renewcommand{\cftchapterfont}{\normalsize\bfseries}
+\renewcommand{\cftchapterpagefont}{\normalsize\bfseries}
+\renewcommand{\cftsectionfont}{\small}
+\renewcommand{\cftsubsectionfont}{\small\itshape}
+
 \renewcommand{\cftchapterpagefont}{\normalfont}
 \renewcommand{\cftchapterdotsep}{\cftdotsep}
 \setlength{\cftsectionnumwidth}{2em}
+
+\setlength{\cftbeforechapterskip}{8pt}
+\setlength{\cftbeforesectionskip}{2pt}
+
 
 % Merged list of figures and tables -- not needed
 % \def\table{\def\figurename{Table}\figure}
@@ -85,6 +146,7 @@
 % Overleaf, 22 January 2016: \subsection and onwards shouldn't be numbered
 \setcounter{secnumdepth}{3}
 \RequirePackage{letterspace} % not so heavy...
+\RequirePackage{setspace}
 
 % Chapter headings
 \renewcommand{\insertchapterspace}{}
@@ -97,20 +159,23 @@
 \renewcommand{\chaptitlefont}{\SingleSpacing\centering\normalfont\large}
 \renewcommand{\printchaptertitle}[1]{\chaptitlefont\MakeUppercase{#1}}
 
+
+
 % Add a command to create an extra chapter with TOC entry.
+\makeatletter
 \newcommand{\extrachapter}[2][\@empty]{%
-  \chapter*{#2}%
+  \chapter*{#1}%
   \addcontentsline{toc}{chapter}{\ifx#1\@empty{#2}\else{#1}\fi}}
+\makeatother
 
 % Section headings
 \setsecheadstyle{\normalfont\bfseries}
 \setbeforesecskip{\onelineskip}
-\setaftersecskip{1pt}
+\setaftersecskip{\baselineskip}
 \setsubsecheadstyle{\normalfont\bfseries}
 \setbeforesubsecskip{\onelineskip}
 \setaftersubsecskip{1pt}
 
-\aliaspagestyle{chapter}{headings}
 
 %
 % Define spacing for use on titlepage
@@ -122,6 +187,7 @@
 %
 % Additional titlepage definitions
 %
+\makeatletter
 \newcommand{\faculty}{\gdef\@faculty}
 \faculty{Default Faculty}                  % Default is Ph.D.
 
@@ -131,15 +197,12 @@
 \newcommand{\unilogo}{\gdef\@unilogo}
 \unilogo{null}                                  % Caltech logo
 
-\newcommand{\address}{\gdef\@address}
-\address{Pasadena, California}                      % Default is Caltech
-
 \newcommand{\copymonth}{\gdef\@copymonth}
 \newcommand{\copyyear}{\gdef\@copyyear}
-\newcommand{\defenddate}{\gdef\@defenddate}
+% \newcommand{\defenddate}{\gdef\@defenddate}
 % Overleaf: Updated 21 January 2016; don't put in a default year value
 \copyyear{!!!!}
-\defenddate{!!!!}
+% \defenddate{!!!!}
 
 % -------------------------------------------------
 %  Supervisor / second-examiner fields
@@ -153,35 +216,16 @@
 \secondexaminer{}
 % -------------------------------------------------
 
-%
-% Overleaf: added 21 January 2016
-\newcommand{\orcid}[1]{\gdef\@orcid{#1}}
-\orcid{xxxxx}
-\newcommand{\rightsstatement}[1]{\gdef\@rightsstatement{#1}}
-\rightsstatement{All rights reserved}
-% The copyright page is new, must conform to CIT requirements
-%
-\newcommand{\makecopyright}{%
- {\parindent=0pt
- \null              % Forces rest to bottom of page
- \vfill
- \begin{center}
-   \SingleSpacing
-   \copyright~\@copyyear\par
-   \@author\\ORCID: \@orcid\par
-   \@rightsstatement\par
- \end{center}}
- \newpage
-}               %% End of \makecopyright
-
 \renewcommand{\maketitle}[1][]{%
- \begin{titlingpage}
-   \OnehalfSpacing
+  \begin{titlingpage}
+   % Remove old spacing
+    %\OnehalfSpacing
+    % Add tighter spacing
+
    \let\footnotesize\small \let\footnoterule\relax \setcounter{page}{1}
    \vskip-\headsep
    \begin{center}
      
-     \titleskip
      {\SingleSpacing\Large\@title\par}
      \titleskip
      B A C H E L O R  \ T H E S I S
@@ -189,58 +233,62 @@
      {\large \@author}\par
      \@copymonth \ \@copyyear {\vfill}
      \authorskip
-     {\footnotesize submitted to the}\\
-     {\scshape \large \@faculty} \par \\
-     \MakeUppercase{\@university}\\
-     \@address\par
+     {\footnotesize submitted to the} \par
+     {\scshape \large \@faculty} \par
+     \MakeUppercase{\@university} \par
      \authorskip
      
      % ---------- Supervisor / second examiner (NEW) ----------
     \ifx\@supervisor\@empty\else
       \vspace{2\bigskipamount}
-      {\footnotesize written under the supervision of\\
+      {\footnotesize written under the supervision of \par
       \normalsize \@supervisor\par}
     \fi
     
     \ifx\@secondexaminer\@empty\else
       \vspace{\bigskipamount}
-      {\footnotesize Second Examiner:\\
+      {\footnotesize Second Examiner:\par
       \normalsize \@secondexaminer\par}
     \fi
     % ---------------------------------------------------------
    \end{center}
    \vspace*{.5in}
- \end{titlingpage}
  \pagenumbering{roman}
+ \end{titlingpage}
  \setcounter{page}{2}
- %\makecopyright
-}               %% End of \maketitle
+}              
+%% End of \maketitle
 
 
 
 % The abstract and acknowledgments are treated as unnumbered chapters
 % with Table of Contents entries.
 \renewenvironment{abstract}
-  {\extrachapter{Abstract}}
+  {\chapter*{Abstract}}
   {\clearpage}
 \newenvironment{acknowledgments}
-  {\extrachapter{Acknowledgments}}
+  {\chapter*{Acknowledgments}}
   {\clearpage}
 % although `acknowledgments' is preferred
 \newenvironment{acknowledgements}
-  {\extrachapter{Acknowledgements}}
+  {\chapter*{Acknowledgements}}
   {\clearpage}
 
 % Overleaf: 22 January 2016 -- non-zero paragraph skip
 \nonzeroparskip
 \setlength{\parindent}{0pt}
-\OnehalfSpacing
+
+
 
 \nobibintoc
 
+
+
 %%% 1 Mar 2017: Need to accommodate bibtex AND biblatex
 \AtBeginDocument{%
-  \@ifpackageloaded{biblatex}
+  % Define chapter style after document begins
+  
+  \@ifpackageloaded{biblatex}   
   {%\usepackage[backend=biber,natbib,style=authoryear]{biblatex}
   \DeclareFieldFormat{addendum}{}
   \AtBeginBibliography{\SingleSpacing}
@@ -350,4 +398,5 @@ Add the option \texttt{iknowwhattodo} to this environment to dismiss this messag
 % Overleaf: 28 January 2016 -- no more pagenumbers in the TOC
 \newcommand{\pocketmaterial}{\addtocontents{toc}{\cftpagenumbersoff{chapter}}}
 
+\makeatother
 \endinput

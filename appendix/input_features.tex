@@ -1,0 +1,150 @@
+\section{Input Features}
+
+% Table for global input features
+\begin{table}[ht]
+\centering
+\caption{Descriptions of the global input features with applied masks $\mathcal{M_{\text{float}}}$, $\mathcal{M_{\text{int}}}$, $\mathcal{M_{\text{int}}^*\subset M_{\text{int}}}$.}
+\begin{tabularx}{\textwidth}{|c|c|X|c|}
+\hline
+\textbf{variable name} & \textbf{type} & \textbf{description} & \textbf{mask} \\
+\hline
+\texttt{jet\_pt} & float & transverse momentum of the jet in GeV & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{jet\_eta} & float & pseudorapidity of the jet & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{n\_Cpfcand} & int & number of charged PF candidates in the jet & \cellcolor{orange!50}$\mathcal{M_{\text{int}}}$ \\
+\hline
+\texttt{n\_Npfcand} & int & number of neutral PF candidates in the jet & \cellcolor{orange!50}$\mathcal{M_{\text{int}}}$ \\
+\hline
+\texttt{nsv} & int & number of secondary vertices in the jet & \cellcolor{orange!50}$\mathcal{M_{\text{int}}}$ \\
+\hline
+\texttt{npv} & int & number of primary vertices in the event & \cellcolor{orange!50}$\mathcal{M_{\text{int}}}$ \\
+\hline
+\texttt{TagVarCSV\_trackSumJetEtRatio} & float & transverse energy ratio of tracks and jet & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{TagVarCSV\_trackSumJetDeltaR} & float & spatial distance between the sum of tracks and jet axis & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{TagVarCSV\_vertexCategory} & int & secondary vertex category index & \cellcolor{orange!50}$\mathcal{M_{\text{int}}}$ \\
+\hline
+\texttt{TagVarCSV\_trackSip2dValAboveCharm} & float & 2D signed impact parameter of first track lifting mass above charm in cm & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{TagVarCSV\_trackSip2dSigAboveCharm} & float & 2D signed impact parameter significance of first track lifting mass above charm & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{TagVarCSV\_trackSip3dValAboveCharm} & float & 3D signed impact parameter of first track lifting mass above charm in cm & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{TagVarCSV\_trackSip3dSigAboveCharm} & float & 3D signed impact parameter significance of first track lifting mass above charm & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{TagVarCSV\_jetNSelectedTracks} & int & number of tracks associated to jet & \cellcolor{orange!50}$\mathcal{M_{\text{int}}}$ \\
+\hline
+\texttt{TagVarCSV\_jetNTracksEtaRel} & int & number of tracks associated to jet for which \( \eta_{\text{rel}} \) is computed & \cellcolor{orange!50}$\mathcal{M_{\text{int}}}$ \\
+\hline
+\end{tabularx}
+\label{tab:global_input_features}
+\end{table}
+
+
+% Table for CPF input features
+\begin{table}[ht]
+\centering
+\caption{Descriptions of the CPF input features with applied masks $\mathcal{M_{\text{float}}}$, $\mathcal{M_{\text{int}}}$, $\mathcal{M_{\text{int}}^*\subset M_{\text{int}}}$.}
+\begin{tabularx}{\textwidth}{|c|c|X|c|}
+\hline
+\textbf{variable name} & \textbf{type} & \textbf{description} & \textbf{mask} \\
+\hline
+\texttt{Cpfcan\_BtagPf\_trackEtaRel} & float & pseudorapidity of charged track relative to jet axis & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{Cpfcan\_BtagPf\_trackPtRel} & float & momentum of charged track transverse to jet axis in GeV & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{Cpfcan\_BtagPf\_trackPPar} & float & momentum of charged track along jet axis in GeV & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{Cpfcan\_BtagPf\_trackDeltaR} & float & spatial distance between track and jet axis & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{Cpfcan\_BtagPf\_trackPParRatio} & float & momentum fraction of charged track along jet axis & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{Cpfcan\_BtagPf\_trackSip2dVal} & float & 2D signed impact parameter of charged track in cm & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{Cpfcan\_BtagPf\_trackSip2dSig} & float & 2D signed impact parameter significance of charged track & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{Cpfcan\_BtagPf\_trackSip3dVal} & float & 3D signed impact parameter of charged track in cm & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{Cpfcan\_BtagPf\_trackSip3dSig} & float & 3D signed impact parameter significance of charged track & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{Cpfcan\_BtagPf\_trackJetDistVal} & float & minimum distance between track and jet axis & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{Cpfcan\_ptrel} & float & transverse momentum fraction of the track & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{Cpfcan\_drminsv} & float & spatial distance between the track and the closest secondary vertex & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{Cpfcan\_VTX\_ass} & int & integer flag: usage of track in primary vertex fit & \cellcolor{orange!50}$\mathcal{M_{\text{int}}}^*$ \\
+\hline
+\texttt{Cpfcan\_puppiw} & int & PUPPI weight of the charged PF candidate & \cellcolor{red!50}$\mathcal{M_{\text{int}}}$ \\
+\hline
+\texttt{Cpfcan\_chi2} & int & \( \chi^2 \) of charged track fit & \cellcolor{red!50}$\mathcal{M_{\text{int}}}$ \\
+\hline
+\texttt{Cpfcan\_quality} & int & integer flag: quality of fitted track & \cellcolor{orange!50}$\mathcal{M_{\text{int}}}^*$ \\
+\hline
+\end{tabularx}
+\label{tab:cpf_input_features}
+\end{table}
+
+
+% Table for NPF input features
+\begin{table}[ht]
+\centering
+\caption{Descriptions of the NPF input features with applied masks $\mathcal{M_{\text{float}}}$, $\mathcal{M_{\text{int}}}$, $\mathcal{M_{\text{int}}^*\subset M_{\text{int}}}$.}
+\begin{tabularx}{\textwidth}{|c|c|X|c|}
+\hline
+\textbf{variable name} & \textbf{type} & \textbf{description} & \textbf{mask} \\
+\hline
+\texttt{Npfcan\_ptrel} & float & transverse momentum fraction of the track & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{Npfcan\_deltaR} & float & spatial distance between track and jet axis & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{Npfcan\_isGamma} & int & integer flag: particle identity (1 = photon, 0 = no photon) & \cellcolor{orange!50}$\mathcal{M_{\text{int}}}^*$ \\
+\hline
+\texttt{Npfcan\_HadFrac} & int & fraction of the energy deposited in the hadronic calorimeter & \cellcolor{orange!50}$\mathcal{M_{\text{int}}}^*$ \\
+\hline
+\texttt{Npfcan\_drminsv} & float & spatial distance between the track and the closest secondary vertex & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{Npfcan\_puppiw} & int & PUPPI weight of the neutral PF candidate & \cellcolor{red!50}$\mathcal{M_{\text{int}}}$ \\
+\hline
+\end{tabularx}
+\label{tab:npf_input_features}
+\end{table}
+
+
+% Table for SV input features
+\begin{table}[ht]
+\centering
+\caption{Descriptions of the SV input features with applied masks $\mathcal{M_{\text{float}}}$, $\mathcal{M_{\text{int}}}$, $\mathcal{M_{\text{int}}^*\subset M_{\text{int}}}$.}
+\begin{tabularx}{\textwidth}{|c|c|X|c|}
+\hline
+\textbf{variable name} & \textbf{data type} & \textbf{description} & \textbf{mask} \\
+\hline
+\texttt{sv\_pt} & float & transverse momentum of the SV in GeV & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{sv\_deltaR} & float & spatial distance between SV and jet axis & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{sv\_mass} & float & mass of the SV in GeV & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{sv\_ntracks} & int & number of tracks associated to the SV & \cellcolor{red!50}$\mathcal{M_{\text{int}}}$ \\
+\hline
+\texttt{sv\_chi2} & int & \( \chi^2 \) of the SV fit & \cellcolor{red!50}$\mathcal{M_{\text{int}}}$ \\
+\hline
+\texttt{sv\_normchi2} & int & \( \chi^2 \) divided by the degrees of freedom & \cellcolor{red!50}$\mathcal{M_{\text{int}}}$ \\
+\hline
+\texttt{sv\_dxy} & float & 2D flight distance of SV in cm & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{sv\_dxysig} & float & 2D flight distance significance of SV & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{sv\_d3d} & float & 3D flight distance of SV in cm & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{sv\_d3dsig} & float & 3D flight distance significance of SV & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{sv\_costhetasvpv} & float & cosine of the angle between SV flight direction and SV momentum & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\texttt{sv\_enratio} & float & energy fraction of the SV & \cellcolor{green!50}$\mathcal{M_{\text{float}}}$ \\
+\hline
+\end{tabularx}
+\label{tab:sv_input_features}
+\end{table}

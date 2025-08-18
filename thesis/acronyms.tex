@@ -1,0 +1,61 @@
+% acronyms.tex
+% Abbreviations used in the thesis (glossaries package)
+% Usage:
+%   \usepackage[acronym]{glossaries}
+%   \makeglossaries
+%   \input{acronyms}
+%   % later in the doc
+%   \printglossary[type=\acronymtype]
+%
+% Call with \gls{<key>} in text to print the short form and define on first use.
+% -----------------------------------------------------------------------------
+% --- Experiments & physics context
+\newacronym[sort=01-01]{sm}{SM}{Standard Model}
+\newacronym[sort=01-02]{hep}{HEP}{High-Energy Physics}
+\newacronym[sort=01-03]{lhc}{LHC}{Large Hadron Collider}
+\newacronym[sort=01-04]{cms}{CMS}{Compact Muon Solenoid}
+
+% --- 02 CMS subsystems & trigger
+\newacronym[sort=02-01]{ecal}{ECAL}{Electromagnetic Calorimeter}
+\newacronym[sort=02-02]{hcal}{HCAL}{Hadron Calorimeter}
+\newacronym[sort=02-03]{hlt}{HLT}{High-Level Trigger}
+\newacronym[sort=02-04]{lone}{L1}{Level-1 Trigger}
+
+% --- 03 Machine learning
+\newacronym[sort=03-01]{ml}{ML}{Machine Learning}
+\newacronym[sort=03-02]{lstm}{LSTM}{Long Short-Term Memory}
+\newacronym[sort=03-03]{relu}{ReLU}{Rectified Linear Unit}
+
+% --- 04 Adversarial ML
+\newacronym[sort=04-01]{fgsm}{FGSM}{Fast Gradient Sign Method}
+\newacronym[sort=04-02]{pgd}{PGD}{Projected Gradient Descent}
+\newacronym[sort=04-03]{intprob}{IntProb}{Probabilistic Integer Perturbation}
+\newacronym[sort=04-03]{pip-pgd}{PIP-PGD}{Probabilistic Integer-Perturbed Projected Gradient Descent}
+
+% --- 05 Metrics
+\newacronym[sort=05-01]{roc}{ROC}{Receiver Operating Characteristic}
+\newacronym[sort=05-02]{auc}{AUC}{Area Under the Curve}
+\newacronym[sort=05-03]{jsd}{JSD}{Jensen--Shannon Distance}
+\newacronym[sort=05-04]{kl}{KL}{Kullback--Leibler (divergence)}
+
+% --- 06 PF reconstruction & inputs
+\newacronym[sort=06-01]{pf}{PF}{Particle-Flow}
+\newacronym[sort=06-02]{cpf}{CPF}{Charged Particle-Flow}
+\newacronym[sort=06-03]{npf}{NPF}{Neutral Particle-Flow}
+\newacronym[sort=06-04]{sv}{SV}{Secondary Vertex}
+\newacronym[sort=06-05]{pv}{PV}{Primary Vertex}
+\newacronym[sort=06-06]{puppi}{PUPPI}{PileUp Per Particle Identification}
+\newacronym[sort=06-07]{csv}{CSV}{Combined Secondary Vertex}
+
+% --- 07 Output discriminators
+\newacronym[sort=07-01]{bvsl}{BvsL}{Bottom-versus-Light discriminator}
+\newacronym[sort=07-02]{cvsb}{CvsB}{Charm-versus-Bottom discriminator}
+\newacronym[sort=07-03]{cvsl}{CvsL}{Charm-versus-Light discriminator}
+
+% --- 08 Confusion-matrix terms
+\newacronym[sort=08-01]{tp}{TP}{True Positive}
+\newacronym[sort=08-02]{tn}{TN}{True Negative}
+\newacronym[sort=08-03]{fp}{FP}{False Positive}
+\newacronym[sort=08-04]{fn}{FN}{False Negative}
+\newacronym[sort=08-05]{tpr}{TPR}{True Positive Rate}
+\newacronym[sort=08-06]{fpr}{FPR}{False Positive Rate}

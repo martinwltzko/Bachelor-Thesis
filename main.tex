@@ -8,6 +8,20 @@
 \usepackage[hyphens]{url}
 \usepackage{lipsum}
 \usepackage{graphicx}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{subcaption}
+
+\usepackage[acronym]{glossaries-extra}
+\makeglossaries
+\input{thesis/acronyms.tex} % <-- put acronyms.tex next to your main .tex
+
+% Customize glossary spacing
+\setlength{\glsdescwidth}{0.6\textwidth}
+\renewcommand{\glsgroupskip}{2\baselineskip}
+\renewcommand{\glspostdescription}{}
+\renewcommand{\glsnamefont}[1]{\textbf{#1}}
+
 
 \usepackage{todonotes}
 
@@ -15,57 +29,64 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{newtxtext,newtxmath}
-
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{microtype}
 % Must use biblatex to produce the Published Contents and Contributions, per-chapter bibliography (if desired), etc.
-\usepackage[
-    backend=biber,natbib,
-    % IMPORTANT: load a style suitable for your discipline
-    style=authoryear
-]{biblatex}
+\usepackage[backend=biber,style=numeric,sorting=none]{biblatex}
 
 % Name of your .bib file(s)
 \addbibresource{example.bib}
-\addbibresource{ownpubs.bib}
+\graphicspath{ {./media/} }
+
 
 \begin{document}
 
+
+
 % Do remember to remove the square bracket!
-\title{Adversarial studies of discrete adversarial attacks for Jet-Flavour Tagging Algorithms within the CMS Experiment}
+\title{\textbf{A probabilistic approach for adversarial perturbation of integer-constraint features for Jet Flavour Tagging Algorithms in the CMS Experiment}}
 \author{Martin Waletzko}
 
 \faculty{Physics Institute III A}      % Faculty name
 \university{RWTH Aachen University}    % Institution name
-\address{Aachen, Germany}                     % Institution address
 %\unilogo{caltech.png}                                 % Institution logo
 \copyyear{2025}  % Year (of graduation) on diploma
-\copymonth{November}
+\copymonth{August}
 
-\supervisor{Prof.\ Dr.\ rer.\ nat.\ Alexander Schmidt\\Physics Institute III A}
-\secondexaminer{null}
+\supervisor{Prof.\ Dr.\ rer.\ nat.\ Alexander Schmidt \\ Physics Institute III A}
+\secondexaminer{Prof.\ Dr.\ rer.\ nat.\ Johannes Erdmann \\ Physics Institute III A}
 
-\orcid{[Author ORCID]}
 
-%% IMPORTANT: Select ONE of the rights statement below.
-\rightsstatement{All rights reserved\todo[size=\footnotesize]{Choose one from the choices in the source code!! And delete this \texttt{todo} when you're done that. :-)}}
-% \rightsstatement{All rights reserved except where otherwise noted}
-% \rightsstatement{Some rights reserved. This thesis is distributed under a [name license, e.g., ``Creative Commons Attribution-NonCommercial-ShareAlike License'']}
-
-%% You can add "[logo]" to the maketitle command if you'd like the Caltech logo to appear on your title page
 \maketitle
-%\maketitle[logo]
 
-\begin{acknowledgements} 	 
-   [Add acknowledgements here. If you do not wish to add any to your thesis, you may simply add a blank titled Acknowledgements page.]
+\begin{acknowledgements}
+[Add acknowledgements here. If you do not wish to add any to your thesis, you may simply add a blank titled Acknowledgements page.]
 \end{acknowledgements}
 
+% Abstract
 \begin{abstract}
-   [This abstract must provide a succinct and informative condensation of your work. Candidates are welcome to prepare a lengthier abstract for inclusion in the dissertation, and provide a shorter one in the CaltechTHESIS record.]
+
+Adversarial attacks pose a significant challenge to the robustness of deep-learning models used in high-energy physics analyses. This thesis investigates the vulnerability of jet-flavour tagging algorithms within the Compact Muon Solenoid experiment to perturbations on both continuous and discrete input features. In addition to standard gradient-based methods such as Projected Gradient Descent (PGD), IntProb is introduced, a probabilistic integer attack designed for discrete-valued physics inputs. The attack leverages instantaneous gradient information to assign feature-specific flip probabilities, enabling efficient perturbations without continuous relaxations. A combined PGD+IntProb attack is further studied to target both feature domains simultaneously. Evaluation on DeepJet demonstrates that IntProb can induce competitive degradation relative to PGD, with complementary effects when applied jointly. Adversarial training experiments show improved robustness to the targeted attack types, though with limited generalisation across unseen perturbations. These results highlight the importance of accounting for discrete-feature vulnerabilities in the development of resilient HEP machine-learning models.
+
+\vfill
+\noindent\fbox{\parbox{0.95\textwidth}{
+\textbf{Disclaimer}\\
+This thesis acknowledges the use of various artificial intelligence technologies, including but not limited to language models and coding assistants. These tools were exclusively employed for the enhancement of the clarity and comprehensibility of the text. The final content, including all conclusions and interpretations, is the sole responsibility of the author.
+}}
+
 \end{abstract}
 
 \tableofcontents
 \listoffigures
 \listoftables
-\printnomenclature
+\glsaddall[types=\acronymtype]
+\clearpage
+{%
+  \let\cleardoublepage\clearpage
+  \printglossary[type=\acronymtype,nonumberlist,style=long]%
+}
+%\printglossary[type=\acronymtype,nonumberlist]
 
 \mainmatter
 
@@ -87,12 +108,69 @@
 % Chapter 5
 \include{thesis/conclusion}
 
-\printbibliography[heading=bibintoc]
+\printbibliography
 
 \appendix
 
+% Exclude appendix figures from list of illustrations
+\let\oldaddcontentsline\addcontentsline
+\renewcommand{\addcontentsline}[3]{%
+  \ifnum\pdfstrcmp{#2}{figure}=0
+    \ifnum\value{chapter}>0
+      % Don't add figures to list of illustrations in appendix
+    \else
+      \oldaddcontentsline{#1}{#2}{#3}%
+    \fi
+  \else
+    \oldaddcontentsline{#1}{#2}{#3}%
+  \fi
+}
+
 \chapter{Appendix}
-\chapter{Consent Form}
+
+\begin{table}[ht]
+\centering
+\caption{Evaluation metrics used to quantify model performance and perturbation impact.}
+\begin{tabularx}{\textwidth}{@{} l X X @{}}
+\toprule
+\textbf{Metric} & \textbf{Definition / Calculation} & \textbf{Physical Interpretation} \\
+\midrule
+\textbf{ROC / AUC} &
+The Receiver Operating Characteristic (ROC) curve plots the True Positive Rate (TPR, or sensitivity) against the False Positive Rate (FPR) across varying classification thresholds. The Area Under the Curve (AUC) is the integral of the ROC curve, ranging from 0.5 (random classifier) to 1.0 (perfect classifier). &
+The ROC curve illustrates the trade-off between correctly identifying heavy-flavour jets (TPR) and mistakenly tagging background jets (FPR). A higher AUC indicates better model performance in distinguishing signal from background, critical for robust jet tagging. \\
+\addlinespace
+\textbf{\(\Delta\)AUC (AUC Drop)} &
+Difference in the model’s Area Under the ROC Curve (AUC) between nominal (unperturbed) and adversarial datasets. Often reported as a percentage of the nominal AUC. &
+Measures the loss of discriminative power for jet tagging. A larger drop means the adversarial attack significantly degrades the classifier’s ability to distinguish heavy-flavour jets from background (attack success). \\
+\addlinespace
+\textbf{Jensen–Shannon Distance (JSD)} &
+The square root of the Jensen–Shannon divergence between the distribution of a given feature for nominal vs. attacked samples (see Equation~(\ref{eq:jsd})). Computed on each feature’s 1D histogram, excluding default/padding values. &
+Quantifies the \emph{statistical difference} between original and perturbed feature distributions. Low JSD (near 0) indicates minimal change (stealthy), while high JSD reveals visible distribution shifts. \\
+\hline
+\end{tabularx}
+\label{tab:evaluation_metrics}
+\end{table}
+
+\begin{figure}[h]
+\centering
+    \includegraphics[width=13cm]{media/output/roc_bvsl_intpgd_failure.pdf}
+    \caption{ROC Curve for FGSM applied to nominal training for the entire input spectrum.}
+    \label{fig:intpgd_roc}
+\end{figure}
+
+
+\begin{figure}[h]
+\centering
+    \includegraphics[width=13cm]{media/output/intpgd_loss_validation.pdf}
+    \caption{Training and validation loss for FGSM applied to the entire input spectrum training.}
+    \label{fig:intpgd_train}
+\end{figure}
+
+\include{appendix/input_features}
+
+\include{appendix/hist_intprob}
+
+\include{appendix/hist_combined}
 
 
 \end{document}
