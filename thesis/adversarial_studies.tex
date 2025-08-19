@@ -13,7 +13,7 @@ At nominal training and testing, the training validation yields a stable curve w
 \begin{figure}[htbp]
   \centering
   \begin{subfigure}[t]{0.59\textwidth}
-    \includegraphics[width=\linewidth]{media/output/Nominal Training_loss_validation.pdf}
+    \includegraphics[width=\linewidth]{media/output/nominal_loss_validation.pdf}
     \caption{Training and validation loss for nominal training.}
     \label{fig:nominal_training}
   \end{subfigure}\hfill
@@ -42,12 +42,12 @@ The overall perturbation pattern suggests that PGD attacks are highly targeted. 
   \centering
   \begin{subfigure}[t]{0.5\textwidth}
     \includegraphics[width=\linewidth]{media/output/features/compare/pgd_1/cmp_global_features_jet_eta.pdf}
-    \caption{Input similarity for PGD(1)}
+    \caption{Input similarity for PGD(1).}
     \label{fig:left}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.5\textwidth}
     \includegraphics[width=\linewidth]{media/output/features/compare/pgd_2/cmp_global_features_jet_eta.pdf}
-    \caption{Input similarity for PGD(2)}
+    \caption{Input similarity for PGD(2).}
     \label{fig:middle}
   \end{subfigure}\hfill
 
@@ -55,16 +55,15 @@ The overall perturbation pattern suggests that PGD attacks are highly targeted. 
   \label{fig:hist_pgd_eta}
 \end{figure}
 
-
 \begin{figure}[htbp]
   \centering
   \begin{subfigure}[t]{0.5\textwidth}
     \includegraphics[width=\linewidth]{media/output/features/compare/pgd_1/cmp_cpf_arr_Cpfcan_ptrel.pdf}
-    \caption{Input similarity for PGD(1)}
+    \caption{Input similarity for PGD(1).}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.5\textwidth}
     \includegraphics[width=\linewidth]{media/output/features/compare/pgd_2/cmp_cpf_arr_Cpfcan_ptrel.pdf}
-    \caption{Input similarity for PGD(2)}
+    \caption{Input similarity for PGD(2).}
   \end{subfigure}\hfill
 
   \caption{Histogram of \texttt{Cpfcan\_ptrel} for one and two iterations (left and right respectively) of PGD with a magnitude of $\epsilon=0.1$ compared against nominal inputs.}
@@ -86,8 +85,8 @@ This progressive degradation highlights two important aspects of PGD attacks. Th
 
 \begin{figure}[h]
 \centering
-    \includegraphics[width=12cm]{media/output/roc_bvsl_pgd_its_1_2_3.pdf}
-    \caption{ROC curves for BvsL misidentification for different iterations values in the PGD attack with $\epsilon=0.1$.}
+    \includegraphics[width=15cm]{media/output/roc_bvsl_pgd_its_1_2_3.pdf}
+    \caption{ROC curves for BvsL misidentification. Different iterations of a nominal trained model tested against a range of iterations for PGD attacks with $\epsilon=0.1$.}
     \label{fig:pgd_iterations}
 \end{figure}
 
@@ -100,7 +99,7 @@ Notably, the training process achieves stable convergence despite the adversaria
 \begin{figure}[h]
 \centering
     
-    \includegraphics[width=12cm]{media/output/pgd eps=0.1, it=1, individual_loss_validation.pdf}
+    \includegraphics[width=12cm]{media/output/pgd_loss_validation.pdf}
     \caption{Training and validation loss for PGD(1) with a magnitude of $\epsilon=0.1$.}
     \label{fig:pgd_loss_curve}
 \end{figure}
@@ -109,7 +108,7 @@ A PGD trained model offers robustness across PGD inferred data ($AUC=0.955$), wh
 
 \begin{figure}[h]
 \centering
-    \includegraphics[width=12cm]{media/output/roc_bvsl_pgd_perms.pdf}
+    \includegraphics[width=15cm]{media/output/roc_bvsl_pgd_perms.pdf}
     \caption{ROC curves for BvsL misidentification for PGD across all combinations of training and testing scenarios with one iteration and a magnitude of $\epsilon=0.1$.}
     \label{fig:pgd_trained}
 \end{figure}
@@ -129,7 +128,7 @@ The comparison of single and double-iteration for PIP attacks — as seen in fig
 
 \begin{figure}[h]
 \centering
-    \includegraphics[width=15cm]{media/output/features/compare/jsd_intprob_per_feature.png}
+    \includegraphics[width=15cm]{media/output/features/compare/jsd_intprob_per_feature.pdf}
     \caption{JSD input similarity development for up to three iterations of the PIP attack with $s=1$ compared against a nominal trained model.}
     \label{fig:intprob_joint_overview}
 \end{figure}
@@ -138,12 +137,12 @@ The comparison of single and double-iteration for PIP attacks — as seen in fig
   \centering
   \begin{subfigure}[t]{0.5\textwidth}
     \includegraphics[width=\linewidth]{media/output/features/compare/intprob_1/cmp_global_features_npv.pdf}
-    \caption{Input similarity for PIP(1)}
+    \caption{Input similarity for PIP(1).}
     \label{fig:left}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.5\textwidth}
     \includegraphics[width=\linewidth]{media/output/features/compare/intprob_2/cmp_global_features_npv.pdf}
-    \caption{Input similarity for PIP(2)}
+    \caption{Input similarity for PIP(2).}
   \end{subfigure}\hfill
 
   \caption{Histogram for global \texttt{npv} for one and two iterations (left and right respectively) of PIP with a sharpness of $s=1$ compared against nominal inputs.}
@@ -177,15 +176,15 @@ Likewise, figure \ref{fig:intprob_rocs_vs_iterations} highlights PIP's iterative
 
 \begin{figure}[h]
 \centering
-    \includegraphics[width=11cm]{media/output/roc_bvsl_intprob_sharpness.pdf}
-    \caption{ROC curves for BvsL misidentification for different sharpness values in the PIP attack at one iteration.}
+    \includegraphics[width=15cm]{media/output/roc_bvsl_intprob_sharpness.pdf}
+    \caption{ROC curves for BvsL misidentification of the nominal trained model tested against different sharpness values in the PIP attack at one iteration.}
     \label{fig:intprob_rocs_vs_sharpness}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-    \includegraphics[width=11cm]{media/output/roc_bvsl_intprob_iterations.pdf}
-    \caption{ROC curve for BvsL misidentification for different iteration values in the PIP attack at $s=1$.}
+    \includegraphics[width=15cm]{media/output/roc_bvsl_intprob_iterations.pdf}
+    \caption{ROC curve for BvsL misidentification of the nominal trained model tested against different iterations in the PIP attack at $s=1$.}
     \label{fig:intprob_rocs_vs_iterations}
 \end{figure}
 
@@ -194,7 +193,7 @@ Figure \ref{fig:intprob_training} shows the training dynamics for PIP with sharp
 
 \begin{figure}[h]
 \centering
-    \includegraphics[width=12cm]{media/output/IntProb s=1_loss_validation.pdf}
+    \includegraphics[width=12cm]{media/output/intprob_loss_validation.pdf}
     \caption{Training and validation loss for an PIP trained model over 30 epochs with a sharpness of 1.}
     \label{fig:intprob_training}
 \end{figure}
@@ -207,7 +206,7 @@ Figure \ref{fig:intprob_rocs_training} shows that the PIP-trained model achieves
 
 \begin{figure}[h]
 \centering
-    \includegraphics[width=12cm]{media/output/roc_bvsl_intprob_permutations.pdf}
+    \includegraphics[width=15cm]{media/output/roc_bvsl_intprob_permutations.pdf}
     \caption{ROC curves for BvsL misidentification for PIP across all combinations of training and testing scenarios at one iteration with $s=1$.}
     \label{fig:intprob_rocs_training}
 \end{figure}
@@ -244,12 +243,12 @@ The histograms between one and two iterations for \texttt{jet\_eta} (float) and 
   \centering
   \begin{subfigure}[t]{0.5\textwidth}
     \includegraphics[width=\linewidth]{media/output/features/compare/combined_it_1/cmp_cpf_arr_Cpfcan_VTX_ass.pdf}
-    \caption{Input similarity for PIP-PGD(1)}
+    \caption{Input similarity for PIP-PGD(1).}
     \label{fig:left}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.5\textwidth}
     \includegraphics[width=\linewidth]{media/output/features/compare/combined_it_2/cmp_cpf_arr_Cpfcan_VTX_ass.pdf}
-    \caption{Input similarity for PIP-PGD(2)}
+    \caption{Input similarity for PIP-PGD(2).}
     \label{fig:middle}
   \end{subfigure}\hfill
 
@@ -259,7 +258,7 @@ The histograms between one and two iterations for \texttt{jet\_eta} (float) and 
 
 \begin{figure}[h]
 \centering
-    \includegraphics[width=15cm]{media/output/features/compare/jsd_comb_per_feature.png}
+    \includegraphics[width=15cm]{media/output/features/compare/jsd_comb_per_feature.pdf}
     \caption{JSD input similarity development for different iterations of the PIP-PGD attack for $s=1$ and $\epsilon=0.1$ while attributing for individual features. Orange bars denote integer based features, blue bars correspond to floating-point features.}
     \label{fig:combined_joint_overview}
 \end{figure}
@@ -272,7 +271,7 @@ The pattern indicates that the combined attack balances stealth and efficacy eff
 
 \begin{figure}[h]
 \centering
-    \includegraphics[width=12cm]{media/output/roc_bvsl_combined_sharpness.pdf}
+    \includegraphics[width=15cm]{media/output/roc_bvsl_combined_sharpness.pdf}
     \caption{AUC score of PIP-PGD for BvsL misidentification for sharpness values in the range of [0.50, 5] at one iteration with a magnitude of $\epsilon=0.10$.}
     \label{fig:combined_testing_sharpness}
 \end{figure}
@@ -281,7 +280,7 @@ Likewise, the AUC score degrades with increasing iterations for the combined PIP
 
 \begin{figure}[h]
 \centering
-    \includegraphics[width=12cm]{media/output/roc_bvsl_combined_iterations.pdf}
+    \includegraphics[width=15cm]{media/output/roc_bvsl_combined_iterations.pdf}
     \caption{AUC score of PIP-PGD for BvsL misidentification for up to 5 iterations with a fixed magnitude of $\epsilon=0.1$ and a sharpness of $s=1$.}
     \label{fig:combined_testing_iterations}
 \end{figure}
@@ -290,14 +289,14 @@ Likewise, the AUC score degrades with increasing iterations for the combined PIP
 
 \begin{figure}[h]
 \centering
-    \includegraphics[width=12cm]{media/output/Combined eps=0.1, it=1, s=1_loss_validation.pdf}
+    \includegraphics[width=12cm]{media/output/combined_loss_validation.pdf}
     \caption{Training and validation loss for PIP-PGD(1) with a sharpness of 1 and a magnitude of 0.1, while scaling individual attack features based on an epsilon tensor.}
     \label{fig:combined_training_loss}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-    \includegraphics[width=12cm]{media/output/roc_bvsl_combined_crossing.pdf}
+    \includegraphics[width=15cm]{media/output/roc_bvsl_combined_crossing.pdf}
     \caption{AUC score of PIP-PGD for BvsL misidentification at cross robustness against PGD(1), PIP, nominal, and PIP-PGD itself.}
     \label{fig:joint_training_crossing}
 \end{figure}
@@ -329,7 +328,7 @@ This section concludes the evaluation of PIP by assessing the transferability an
     \label{fig:joint_sharpness_vs_iterarions}
 \end{figure}
 
-Figure~\ref{fig:joint_sharpness_vs_iterarions} visualises the impact of jointly varying the \emph{iteration count} $k$ (rows) and the \emph{sharpness} parameter $s$ (columns) on the attack efficacy for PIP. For each $(k,s)$ point the resulting BvsL AUC gets reported after the attack has been applied to the nominally trained model. Notably, the heatmap is inverted to emphasize stronger degradation from the nominal baseline.
+Figure~\ref{fig:joint_sharpness_vs_iterarions} visualises the impact of jointly varying the \emph{iteration count} $k$ (rows) and the \emph{sharpness} parameter $s$ (columns) on the attack efficacy for PIP. For each $(k,s)$ point the resulting BvsL AUC is reported after the attack has been applied to the nominally trained model. Notably, the heatmap is inverted to emphasize stronger degradation from the nominal baseline.
 
 \paragraph{Key trends.}
 \begin{enumerate}
@@ -352,8 +351,8 @@ The last section of this thesis focuses on a cross-robustness study between trai
 
 \begin{figure}[h]
 \centering
-    \includegraphics[width=12cm]{media/cross_robustness.pdf}
-    \caption{AUC score for BvsL misidentification for all combinations of adversarial training and adversarial testing between nominal, PGD(1), PIP, and joint PGD(1)+PIP attacks.}
+    \includegraphics[width=13cm]{media/cross_robustness.pdf}
+    \caption{AUC score for BvsL misidentification for all combinations of adversarial training and adversarial testing between nominal, PGD(1), PIP(1), and joint PIP-PGD(1) attacks.}
     \label{fig:cross_robustness}
 \end{figure}
 
