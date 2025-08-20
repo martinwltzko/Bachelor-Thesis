@@ -280,7 +280,7 @@ The PIP method parallels several probabilistic strategies for adversarial attack
 Similar to FGSM, PIP allows an iterative application offering a more nuanced attack that is able to correct itself after each iteration (e.g. when the gradient sign is flipped after one iteration and $u_i=1$). This allows for a composite attack of PIP and PGD over multiple iteration, which will be discussed in the next section. 
 
 %----------------------------------------------------------------------
-\section{Discrete-Continuous Projected Gradient Descent}
+\section{Probabilistic Integer-Perturbed Projected Gradient Descent}
 \label{sec:method_combined}
 
 Probabilistic Integer-Perturbed Projected Gradient Descent (PIP-PGD) is a composite attack of PGD and PIP perturbs floating-point and integer features independently, acting on a broader spectrum of the input domain. This attack incorporates PGD's efficacy on continuous spaces with PIP's discrete probabilistic nature. In this context "PGD(1)" will refer to a single-step FGSM, while higher numbered PGD($k$) would mean $k$ iterative steps on the continuous features. Likewise, these steps get also applied to PIP, where the same approach is used, e.g. PIP($k$) corresponds to $k$ individual PIP attacks, where after each iteration, the updated gradient gets reevaluated. The joint attack can be written as:

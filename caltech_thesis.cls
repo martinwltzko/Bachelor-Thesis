@@ -233,7 +233,7 @@
      {\large \@author}\par
      \@copymonth \ \@copyyear {\vfill}
      \authorskip
-     {\footnotesize submitted to the} \par
+     {\footnotesize prepared at the} \par
      {\scshape \large \@faculty} \par
      \MakeUppercase{\@university} \par
      \authorskip

@@ -1,14 +1,35 @@
 \chapter{Introduction}
 
-Modern particle physics is becoming increasingly dependent on Machine Learning (ML) for essential analytical tasks, ranging from event reconstruction to particle identification. One notable
+Modern particle physics is becoming increasingly dependent on Machine Learning (ML) for essential analytical tasks, ranging from event reconstruction to particle identification \cite{Stein2022}. One notable
 application of this technology is jet flavour tagging, where algorithms aim to distinguish jets that originate
-from different quark flavours. The identification of bottom-quark jets plays a central role in many precision measurements and searches for new physics at the Large Hadron Collider (LHC). However, the robustness of these models is critical. In the broader ML community, adversarial attacks — small, deliberately designed perturbations that can mislead a model — have been widely studied, particularly in computer vision. Their potential impact in particle physics remains under-explored though, especially in scenarios involving discrete-valued input features.
+from different quark flavours. The identification of bottom-quark jets plays a central role in many precision measurements and searches for new physics at the Large Hadron Collider (LHC) \cite{PhysRevLett.121.121801}. However, the robustness of these models is critical. In the broader ML community, adversarial attacks — small, deliberately designed perturbations that can mislead a model — have been widely studied, particularly in computer vision \cite{goodfellow2015explainingharnessingadversarialexamples}. Their potential impact in particle physics remains under-explored though, especially in scenarios involving discrete-valued input features.
 
-Jet-tagging algorithms such as DeepJet process hundreds of features, including continuous detector observables and discrete quantities (e.g. counts and category identifiers). Most adversarial studies affect only continuous inputs, overlooking the unique behaviour and vulnerabilities of models when discrete inputs are perturbed. This gap offers an opportunity to probe robustness in a more comprehensive way.
+Jet-tagging algorithms such as DeepJet \cite{Bols_2020} process hundreds of features, including continuous detector observables and discrete quantities (e.g. counts and category identifiers). Most adversarial studies affect only continuous inputs, overlooking the unique behaviour and vulnerabilities of models when discrete inputs are perturbed. This gap offers an opportunity to probe robustness in a more comprehensive way.
 
-This thesis addresses this challenge by introducing Probabilistic Integer Perturbation (PIP), an adversarial method tailored to discrete features. PIP uses gradient information in an one-step heuristic to assign feature-specific probabilities for discrete changes, ensuring that all perturbations remain physically meaningful. This method is furthermore combined with the Projected Gradient Descent (PGD) attack, targeting both continuous and discrete domains simultaneously and providing a broader evaluation of model vulnerabilities.
+This thesis addresses this challenge by introducing Probabilistic Integer Perturbation (PIP), an adversarial attack tailored to discrete features. PIP uses gradient information in an one-step heuristic to assign feature-specific probabilities for discrete changes, ensuring that all perturbations remain physically meaningful. This method is furthermore combined with the Projected Gradient Descent (PGD) attack \cite{madry2019deeplearningmodelsresistant}, targeting both continuous and discrete domains simultaneously and providing a broader evaluation of model vulnerabilities.
 
-Empirically, this study uses the DeepJet architecture trained on approximately ten million simulated Compact Muon Solenoid (CMS) jets across all major flavour categories. Additional to susceptibility for perturbation of continuous values, the results show that DeepJet is vulnerable to degradation through discrete perturbations too. The combined Probabilistic Integer-Perturbed Projected Gradient Descent (PIP-PGD) attack amplifies this effect. Adversarial training with PIP-PGD attacks is presented as a solution, offering robustness in the respective regimes.
+Empirically, this study uses the DeepJet architecture \cite{Bols_2020} trained on approximately ten million simulated jets across all major flavour categories. In additional to the susceptibility for perturbation of continuous values, the results show that DeepJet is vulnerable to degradation through discrete perturbations too. The combined Probabilistic Integer-Perturbed Projected Gradient Descent (PIP-PGD) attack amplifies this effect. Adversarial training with PIP-PGD attacks is presented as a solution, offering robustness in the respective regimes.
 
 Although discrete perturbations do not directly correspond to realistic detector effects, they serve as a diagnostic tool to reveal model dependencies on discretised inputs. Insights that remain hidden in continuous-only studies are revealed through the use of these perturbations. The work presented here contributes to the development of a more complete understanding of adversarial robustness in High Energy Physics (HEP) machine learning and outlines approaches for developing models that are both accurate and resilient in demanding scientific applications.
 
+\newpage
+In short, this thesis does contribute and is structured in following way. 
+
+\paragraph{Contributions}:
+\begin{itemize}
+    \item \textbf{Method:} Introduces PIP, a probabilistic, gradient-guided attack for integer features that preserves physical discreteness and bounds without continuous relaxation.
+    \item \textbf{Joint attack:} Proposes PIP-PGD, a simple yet effective composition that perturbs continuous and discrete inputs in parallel, revealing complementary vulnerabilities.
+    \item \textbf{Evaluation:} Provides a systematic robustness study on DeepJet over roughly ten million jets, covering attack severity, performance, iteration depth, and hyperparameter adjustments.
+    \item \textbf{Defence:} Demonstrates that adversarial training with the joint attack achieves the best cross-robustness, mitigating attack-specific overfitting while preserving nominal performance.
+\end{itemize}
+
+\paragraph{Thesis outline.}
+\begin{itemize}
+    \item \textbf{Chapter II} reviews the Standard Model, the LHC, and the CMS detector.
+    \item \textbf{Chapter III} summarises ML in HEP, adversarial ML, and the DeepJet tagger.
+    \item \textbf{Chapter IV} details the dataset, metrics, threat model, and introduces PIP and PIP-PGD.
+    \item \textbf{Chapter V} presents the empirical studies on DeepJet, including severity analysis, attack performance, and adversarial training.
+    \item \textbf{Chapter VI} concludes with implications, limitations, and directions for future work.
+\end{itemize}
+
+Together, these results argue for discrete-aware robustness assessments in HEP ML and provide practical methods — PIP and PIP-PGD — to develop taggers that are not only accurate but also resilient in demanding scientific applications.

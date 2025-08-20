@@ -14,93 +14,55 @@ At nominal training and testing, the training validation yields a stable curve w
   \centering
   \begin{subfigure}[t]{0.59\textwidth}
     \includegraphics[width=\linewidth]{media/output/nominal_loss_validation.pdf}
-    \caption{Training and validation loss for nominal training.}
+    \caption{Training and validation loss for nominal training up to 30 epochs.}
     \label{fig:nominal_training}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.41\textwidth}
     \includegraphics[width=\linewidth]{media/output/roc_bvsl_nominal_nominal.pdf}
-    \caption{ROC Curve for nominal baseline.}
+    \caption{ROC Curve for the nominal trained baseline tested against nominal input.}
     \label{fig:nominal_roc}
   \end{subfigure}\hfill
 \end{figure}
 
+\FloatBarrier
 \subsection{Projected Gradient Descent}
 
-To assess the efficacy of the novel approach it is also necessary to look at well established adversarial attacks as an adversarial baseline — in this case PGD. For the sake of simplicity a magnitude of $\epsilon=0.1$ is applied for all following PGD attacks\footnote{As briefly discussed in section \ref{sec:fgsm_methodology} an additional scaling is applied proportional to the relative feature scale tensor $\varepsilon_{i,i}$. The behaviour for varying PGD magnitudes does not fall into the scope of this thesis and is therefore intentionally left out}.
+To assess the efficacy of the novel approach it is also necessary to look at well established adversarial attacks as an adversarial baseline — in this case PGD. For the sake of simplicity a magnitude of $\epsilon=0.1$ is applied for all following PGD attacks\footnote{As briefly discussed in section \ref{sec:fgsm_methodology} an additional scaling is applied proportional to the relative feature scale tensor $\varepsilon_{i,i}$. The behaviour for varying PGD magnitudes does not fall into the scope of this thesis.}.
 
-\paragraph{Severity:} Figures \ref{fig:hist_pgd_eta} and \ref{fig:hist_pgd_cpf_ptrel} demonstrate the perturbation severity for \texttt{jet\_eta} and charged particle flow \texttt{Cpfcan\_ptrel} features respectively, comparing single and double-iteration PGD attacks.
+\paragraph{Severity:} Figure \ref{fig:pgd_input_overview} provides a comprehensive view of input similarity across the entire input domain for up to three PGD iterations. The figure reveals an important patterns: 
+(1) The JSD values for all features and iterations fall within the range of $\mathcal{O}(10^{-2})$ to $\mathcal{O}(10^{-3})$, in agreement to the threshold typically considered for stealthy attacks.
+(2) The perturbation magnitude generally stays constant over multiple iteration. However, this is not uniform across all features; some features show minimal change even after multiple iterations, while others exhibit significant perturbation from the first iteration.
 
-The JSD values for both features fall within the range of $\mathcal{O}(10^{-2})$ to $\mathcal{O}(10^{-3})$, in agreement to the threshold typically considered for stealthy attacks. This indicates that PGD perturbations maintain statistical similarity to the original data distribution, making them difficult to detect through simple distributional analysis. The \texttt{jet\_eta} feature shows slightly higher JSD values compared to \texttt{Cpfcan\_ptrel}, reflecting the different sensitivity of these features to gradient-based perturbations.
+This selective perturbation behaviour stems from the gradient reassessment process inherent in PGD. Unlike single-step methods like FGSM that always assume the worst-case perturbation direction, PGD's iterative approach allows for more nuanced optimization. Features with strong gradients in the initial iterations may see their gradients diminish or even reverse direction in subsequent iterations, causing them to "project back" toward their original values. The overall perturbation pattern suggests that PGD attacks are highly targeted. They focus computational effort on features that provide the most leverage for compromising the classifier's performance.
 
-Figure \ref{fig:pgd_input_overview} provides a comprehensive view of input similarity across the entire input domain for up to three PGD iterations. The figure reveals an important patterns: The perturbation magnitude generally stays constant over multiple iteration. However, this is not uniform across all features; some features show minimal change even after multiple iterations, while others exhibit significant perturbation from the first iteration.
-
-This selective perturbation behaviour stems from the gradient reassessment process inherent in PGD. Unlike single-step methods like FGSM that always assume the worst-case perturbation direction, PGD's iterative approach allows for more nuanced optimization. Features with strong gradients in the initial iterations may see their gradients diminish or even reverse direction in subsequent iterations, causing them to "project back" toward their original values.
-
-The overall perturbation pattern suggests that PGD attacks are highly targeted. They focus computational effort on features that provide the most leverage for compromising the classifier's performance. This targeting efficiency is crucial for maintaining stealth while maximizing attack efficacy.
-
-\begin{figure}[htbp]
-  \centering
-  \begin{subfigure}[t]{0.5\textwidth}
-    \includegraphics[width=\linewidth]{media/output/features/compare/pgd_1/cmp_global_features_jet_eta.pdf}
-    \caption{Input similarity for PGD(1).}
-    \label{fig:left}
-  \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.5\textwidth}
-    \includegraphics[width=\linewidth]{media/output/features/compare/pgd_2/cmp_global_features_jet_eta.pdf}
-    \caption{Input similarity for PGD(2).}
-    \label{fig:middle}
-  \end{subfigure}\hfill
-
-  \caption{Histogram of \texttt{jet\_eta} for one and two iterations (left and right respectively) of PGD with a magnitude of $\epsilon=0.1$ compared against nominal inputs.}
-  \label{fig:hist_pgd_eta}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \begin{subfigure}[t]{0.5\textwidth}
-    \includegraphics[width=\linewidth]{media/output/features/compare/pgd_1/cmp_cpf_arr_Cpfcan_ptrel.pdf}
-    \caption{Input similarity for PGD(1).}
-  \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.5\textwidth}
-    \includegraphics[width=\linewidth]{media/output/features/compare/pgd_2/cmp_cpf_arr_Cpfcan_ptrel.pdf}
-    \caption{Input similarity for PGD(2).}
-  \end{subfigure}\hfill
-
-  \caption{Histogram of \texttt{Cpfcan\_ptrel} for one and two iterations (left and right respectively) of PGD with a magnitude of $\epsilon=0.1$ compared against nominal inputs.}
-  \label{fig:hist_pgd_cpf_ptrel}
-\end{figure}
-
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
     \includegraphics[width=15cm]{media/output/features/compare/jsd_pgd_iterations_featurewise_hor.pdf}
-    \caption{JSD input similarity development for different iterations of the PGD attack with $\epsilon=0.1$.}
+    \caption{JSD input similarity development for up to three iterations of the PGD attack with $\epsilon=0.1$ tested against a nomainal trained model.}
     \label{fig:pgd_input_overview}
 \end{figure}
-
-\paragraph{Attack:} Figure \ref{fig:pgd_iterations} illustrates the impact of multiple PGD iterations on the BvsL discrimination task. The baseline nominal performance (AUC = 0.965) serves as the reference point against which attack efficacy is measured.
-
-The single-iteration PGD attack (\emph{PGD(1)}) achieves an AUC of approximately $0.937$, representing a clear reduction in performance. This initial attack demonstrates that even minimal adversarial perturbation can compromise the classifier's discriminative power. The two-iteration attack (\emph{PGD(2)}) yields the same AUC score as PGD(1), while the three-iteration variant (\emph{PGD(3)}) pushes the AUC slightly down to approximately 0.936.
+\FloatBarrier
+\newpage
+\paragraph{Attack:} Figure \ref{fig:pgd_iterations} illustrates the impact of multiple PGD iterations on the BvsL discrimination task. The baseline nominal performance (AUC = 0.965) serves as the reference point against which attack efficacy is measured. The single-iteration PGD(1) attack achieves an AUC of approximately $0.937$, representing a clear reduction in performance. This initial attack demonstrates that even minimal adversarial perturbation can compromise the classifier's discriminative power. The two-iteration PGD(2) attck yields the same AUC score as PGD(1), while the three-iteration variant  pushes the AUC slightly down to approximately 0.936.
 
 This progressive degradation highlights two important aspects of PGD attacks. The iterative nature allows for more sophisticated perturbation strategies that can exploit the model's decision boundaries more effectively than single-step methods. Moreover, the diminishing returns observed between iterations 2 and 3 suggest that the attack approaches a performance floor, beyond which additional iterations provide minimal benefit.
 
 \begin{figure}[h]
 \centering
     \includegraphics[width=15cm]{media/output/roc_bvsl_pgd_its_1_2_3.pdf}
-    \caption{ROC curves for BvsL misidentification. Different iterations of a nominal trained model tested against a range of iterations for PGD attacks with $\epsilon=0.1$.}
+    \caption{ROC curves for BvsL misidentification. Nominal trained model tested against one, two, and three iterations of PGD attacks with $\epsilon=0.1$.}
     \label{fig:pgd_iterations}
 \end{figure}
 
-\paragraph{Adversarial Training:} Adversarial training with PGD perturbations introduces unique challenges to the learning process, as illustrated in Figure \ref{fig:pgd_loss_curve}. The training dynamics reveal several important characteristics of PGD-based adversarial training.
+\paragraph{Adversarial Training:} Adversarial training with PGD perturbations introduces unique challenges to the learning process. The training and loss curve ( figure \ref{fig:pgd_loss_curve}) exhibit a higher spread between the convergence in loss (training sitting at approximately 1.0, validation at roughly 0.95), reflecting the inherent difficulty of learning robust representations under continuous adversarial perturbation. This is caused due to the necessity to simultaneously optimize for performance on clean data while developing defences against gradient-based attacks.
 
-The training and loss curve exhibit a higher spread between the convergence in loss (training sitting at approximately 1.0, validation at roughly 0.95), reflecting the inherent difficulty of learning robust representations under continuous adversarial perturbation. This is caused by the model's need to simultaneously optimize for performance on clean data while developing defences against gradient-based attacks.
-
-Notably, the training process achieves stable convergence despite the adversarial component. This means that PGD-based adversarial training is a viable strategy for improving model robustness. The final validation loss values indicate that the adversarially trained model maintains reasonable performance while developing resistance to gradient-based attacks.
+Notably, the training process achieves stable convergence despite the adversarial component. This means that PGD-based adversarial training is a viable strategy for improving model robustness.
 
 \begin{figure}[h]
 \centering
     
     \includegraphics[width=12cm]{media/output/pgd_loss_validation.pdf}
-    \caption{Training and validation loss for PGD(1) with a magnitude of $\epsilon=0.1$.}
+    \caption{Training and validation loss for a PGD(1) trained with a magnitude of $\epsilon=0.1$ for up to 30 epochs.}
     \label{fig:pgd_loss_curve}
 \end{figure}
 
@@ -113,7 +75,7 @@ A PGD trained model offers robustness across PGD inferred data ($AUC=0.955$), wh
     \label{fig:pgd_trained}
 \end{figure}
 
-
+\FloatBarrier
 % PIP
 \section{Probabilistic Integer Perturbation}
 \label{sec:inprob_result}
@@ -163,28 +125,29 @@ The comparison of single and double-iteration for PIP attacks — as seen in fig
 \end{figure}
 
 \newpage
-\paragraph{Attack:} The PIP attack exhibits a distinct characteristic compared to continuous perturbation methods. Its effectiveness depends on the number of iterations and the sharpness parameter in roughly same parts. Figure \ref{fig:intprob_rocs_vs_sharpness} illustrates this relationship, showing how varying sharpness values affect the attack's ability to compromise the classifier:
+\paragraph{Attack:} The PIP attack exhibits a distinct characteristic compared to PGD. Its effectiveness depends on the number of iterations and the sharpness parameter in roughly same parts. Figure \ref{fig:intprob_rocs_vs_sharpness} illustrates this relationship, showing how varying sharpness values affect the attack's ability to compromise the classifier:
 
-\begin{itemize}
-    \item At \textbf{high sharpness} ($s = 5$), the attack exhibits minimal impact, with AUC values remaining close to the nominal baseline. This reflects the probabilistic nature of the PIP method—when the sharpness is high, the probability of flipping integer features remains small, resulting in perturbations that are too subtle to significantly affect the classifier's decision boundaries.
-    \item At \textbf{moderate sharpness} around $s = 1.0$, a more pronounced degradation becomes apparent, with AUC dropping to approximately 0.961. This represents the sweet spot where the attack achieves meaningful perturbation while maintaining reasonable stealth characteristics. 
-    \item A \textbf{low sharpness} of $s = 0$ corresponds to a completely deterministic attack, where all features with a gradient unequal to zero get eventually increased/decreased. It produces the most aggressive attack, reaching an AUC of around 0.829.
-\end{itemize}
-
-
-Likewise, figure \ref{fig:intprob_rocs_vs_iterations} highlights PIP's iterative behaviour. Unlike PGD, where additional iterations yield progressively smaller changes, PIP exhibits steady AUC degradation, with subsequent iterations reducing the AUC almost linearly. This behaviour arises from PIP's stochastic nature, where features unaltered in prior iterations gain further opportunities for modification in later ones. This increases their cumulative perturbation probability across iterations.
-
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
     \includegraphics[width=15cm]{media/output/roc_bvsl_intprob_sharpness.pdf}
     \caption{ROC curves for BvsL misidentification of the nominal trained model tested against different sharpness values in the PIP attack at one iteration.}
     \label{fig:intprob_rocs_vs_sharpness}
 \end{figure}
 
+\begin{itemize}
+    \item At \textbf{high sharpness} ($s = 5$), the attack exhibits minimal impact, with AUC values remaining close to the nominal baseline. This reflects the probabilistic nature of the PIP method—when the sharpness is high, the probability of flipping integer features remains small, resulting in perturbations that are too subtle to significantly affect the classifier's decision boundaries.
+    \item At \textbf{moderate sharpness} around $s = 1.0$, a more pronounced degradation becomes apparent, with the AUC dropping to approximately 0.961. This represents the sweet spot where the attack achieves meaningful perturbation while maintaining reasonable stealth characteristics. 
+    \item A \textbf{low sharpness} of $s = 0$ corresponds to a completely deterministic attack, where all features with a gradient unequal to zero get eventually increased/decreased. It produces the most aggressive attack, reaching an AUC of around 0.829.
+\end{itemize}
+
+
+Likewise, figure \ref{fig:intprob_rocs_vs_iterations} highlights PIP's iterative behaviour. Unlike PGD, where additional iterations yield progressively smaller changes, PIP exhibits steady AUC degradation, with subsequent iterations reducing the AUC from 0.956 at one iteration to 0.916 at five iterations. This behaviour arises from PIP's stochastic nature, where features unaltered in prior iterations gain further opportunities for modification in later ones. This increases their cumulative perturbation probability across iterations.
+
+
 \begin{figure}[h]
 \centering
     \includegraphics[width=15cm]{media/output/roc_bvsl_intprob_iterations.pdf}
-    \caption{ROC curve for BvsL misidentification of the nominal trained model tested against different iterations in the PIP attack at $s=1$.}
+    \caption{ROC curve for BvsL misidentification of the nominal trained model tested against up to five iteration of the PIP attack at $s=1$.}
     \label{fig:intprob_rocs_vs_iterations}
 \end{figure}
 
@@ -200,7 +163,7 @@ Figure \ref{fig:intprob_training} shows the training dynamics for PIP with sharp
 
 The training loss curve demonstrates visible fluctuations, particularly in comparison to PGD-based training. This instability stems from the discrete nature of PIP perturbations — unlike continuous methods that can produce arbitrarily small perturbations, PIP operates on a finite set of possible integer modifications. This creates less but more pronounced perturbations offering a greater challenge in the training procedure. This instability reflects in the validation loss too, indicating problems to generalize for unseen PIP perturbations. 
 
-Compared to nominal training or PGD, the validation loss slightly exceeds the training loss, suggesting mild adaptation to the lower-severity PIP perturbations. This trend is evident in the corresponding AUC scores (see figure \ref{fig:intprob_rocs_training}).
+Compared to nominal training or PGD, the validation loss slightly exceeds the training loss, suggesting mild adaptation to the lower-severity PIP perturbations \ref{fig:intprob_rocs_training}).
 
 Figure \ref{fig:intprob_rocs_training} shows that the PIP-trained model achieves robust performance against PIP-perturbed data, with an AUC of $0.967$, slightly surpassing the nominal-trained baseline ($AUC = 0.965$) by approximately $0.2\%$. When evaluated on nominal data, the model maintains a strong AUC of $0.962$, indicating minimal performance degradation compared to the undisturbed model.
 
@@ -211,9 +174,9 @@ Figure \ref{fig:intprob_rocs_training} shows that the PIP-trained model achieves
     \label{fig:intprob_rocs_training}
 \end{figure}
 
-
+\FloatBarrier
 % Joint Application of PIP and PGD
-\section{Joint Application of PGD and PIP}
+\section{Probabilistic Integer-Perturbed Projected Gradient Descent}
 
 As described in Sec.~\ref{sec:method_combined}, the PIP-PGD attack perturbs floating-point and integer features independently in a single pass. The following analysis examines its effect on input similarity, model performance, and training behaviour.
 
@@ -235,7 +198,7 @@ The histograms between one and two iterations for \texttt{jet\_eta} (float) and 
     \label{fig:middle}
   \end{subfigure}\hfill
 
-  \caption{Histogram for global \texttt{jet\_eta} for multiple iterations of PIP-PGD compared against nominal inputs.}
+  \caption{Histogram of input perturbation for continuously-valued global \texttt{jet\_eta} for one (left) and two (right) iterations of PIP-PGD compared against nominal inputs.}
   \label{fig:combined_input_eta}
 \end{figure}
 
@@ -252,31 +215,32 @@ The histograms between one and two iterations for \texttt{jet\_eta} (float) and 
     \label{fig:middle}
   \end{subfigure}\hfill
 
-  \caption{Histogram for \texttt{Cpfcan\_VTX\_ass} for multiple iterations of PIP-PGD compared against nominal inputs.}
+  \caption{Histogram of input perturbation for discrete-valued \texttt{Cpfcan\_VTX\_ass} for one (left) and two (right) iterations of PIP-PGD compared against nominal inputs.}
   \label{fig:combined_input_vtxAss}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-    \includegraphics[width=15cm]{media/output/features/compare/jsd_comb_per_feature.pdf}
-    \caption{JSD input similarity development for different iterations of the PIP-PGD attack for $s=1$ and $\epsilon=0.1$ while attributing for individual features. Orange bars denote integer based features, blue bars correspond to floating-point features.}
-    \label{fig:combined_joint_overview}
 \end{figure}
 
 Figure \ref{fig:combined_joint_overview} provides an overview of input similarity across all features for the combined PIP-PGD attack, highlighting how different feature types respond to the hybrid perturbation strategy. While certain integer features — which are denoted orange in the figure — such as \\ \texttt{TagVarCSV\_jetNTracksEtaRel}, \texttt{TagVarCSV\_vertexCategory} or \texttt{Cpfcan\_quality} exhibit larger perturbations than others, their overall similarity remains comparable.
 
-The pattern indicates that the combined attack balances stealth and efficacy effectively: integer features introduce targeted modifications atop continuous feature perturbations, enabling a more aggressive perturbation strategy.
 
-\paragraph{Attack:} This increased aggression is apparent for variations in the applied sharpness ranging from a slight degradation at $s=5$ ($AUC=0.936$) towards a moderate impact at $s=2$ ($AUC=0.934$) and a severe degradation at $s=0.5$ with an AUC of $0.916$  as seen in Figure \ref{fig:combined_testing_sharpness}.
+\begin{figure}[H]
+\centering
+    \includegraphics[width=15cm]{media/output/features/compare/jsd_comb_per_feature.pdf}
+    \caption{JSD input similarity development for different iterations of the PIP-PGD attack for $s=1$ and $\epsilon=0.1$ while attributing for individual features. Orange bars denote integer based features, blue bars correspond to floating-point features. Values below $10^{-1}$ are not included due to rounding.}
+    \label{fig:combined_joint_overview}
+\end{figure}
+
+The pattern indicates that the combined attack balances stealth and efficacy effectively: integer features introduce targeted modifications atop continuous feature perturbations, enabling a more aggressive perturbation strategy. 
+
+\paragraph{Attack:} This increased aggression is apparent for variations in the applied sharpness ranging from a slight degradation at $s=5$ ($AUC=0.936$) towards a moderate impact at $s=1$ ($AUC=0.928$) and a severe degradation at $s=0.5$ with an AUC of $0.916$  as seen in figure \ref{fig:combined_testing_sharpness}. The gap between nominal performance ($AUC=0.965$) and PIP at $s=5$ is predominately caused by PGD(1) ($AUC=0.937$, see figure \ref{fig:pgd_trained}).
 
 \begin{figure}[h]
 \centering
     \includegraphics[width=15cm]{media/output/roc_bvsl_combined_sharpness.pdf}
-    \caption{AUC score of PIP-PGD for BvsL misidentification for sharpness values in the range of [0.50, 5] at one iteration with a magnitude of $\epsilon=0.10$.}
+    \caption{AUC score of BvsL misidentification for PIP-PGD with sharpness between $s=0.5$ and $s=5$ at one iteration with a magnitude of $\epsilon=0.10$ tested against the nominal trained model.}
     \label{fig:combined_testing_sharpness}
 \end{figure}
 
-Likewise, the AUC score degrades with increasing iterations for the combined PIP-PGD attack (see figure \ref{fig:combined_testing_iterations}). The significant drop from the nominal baseline after one iteration primarily results from PGD(1)-induced degradation, while the continued AUC decline for iterations > 1 is largely due to PIP stochastic nature, as discussed in Section \ref{sec:inprob_result}.
+Likewise, the AUC score degrades with increasing iterations for the combined PIP-PGD attack from $AUC=0.928$ at one iteration towards stark inference of $AUC=0.885$ at five (see figure \ref{fig:combined_testing_iterations}). The continued AUC decline for iterations > 1 is largely due to PIP stochastic nature, as discussed in Section \ref{sec:inprob_result}.
 
 \begin{figure}[h]
 \centering
@@ -285,14 +249,25 @@ Likewise, the AUC score degrades with increasing iterations for the combined PIP
     \label{fig:combined_testing_iterations}
 \end{figure}
 
-\paragraph{Adversarial Training:}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
-    \includegraphics[width=12cm]{media/output/combined_loss_validation.pdf}
+    \includegraphics[width=13cm]{media/output/combined_loss_validation.pdf}
     \caption{Training and validation loss for PIP-PGD(1) with a sharpness of 1 and a magnitude of 0.1, while scaling individual attack features based on an epsilon tensor.}
     \label{fig:combined_training_loss}
 \end{figure}
+
+
+\FloatBarrier
+\paragraph{Adversarial Training:} The training loss curve (see figure \ref{fig:combined_training_loss}) for PIP-PGD exhibits moderate volatility, falling between the stability of pure PGD training and the higher volatility of PIP training . This intermediate behaviour is attributable to the model's need to develop defences that are effective against continuous and probabilistic discrete modifications.
+
+
+
+The validation loss demonstrates robust generalization, suggesting that the combined training approach successfully teaches the model to recognize and resist both perturbation types. The convergence pattern indicates that the model learns to balance the competing objectives of maintaining nominal performance while developing comprehensive adversarial defences.
+
+Notably, the final validation loss values are competitive with single-method adversarial training and even surpass pure PIP training. This is an indication that the combined approach does not sacrifice overall performance for broader robustness. It furthermore suggests that the two perturbation types target complementary aspects of the model's decision boundaries, allowing for more comprehensive defence development.
+
+The training efficiency appears reasonable, with convergence achieved within a similar time frame to single-method approaches. This efficiency is particularly important given the increased computational complexity of generating both types of adversarial examples during training.
 
 \begin{figure}[h]
 \centering
@@ -301,19 +276,12 @@ Likewise, the AUC score degrades with increasing iterations for the combined PIP
     \label{fig:joint_training_crossing}
 \end{figure}
 
-The training loss curve for PIP-PGD exhibits moderate volatility, falling between the stability of pure PGD training and the higher volatility of PIP training (see Figure \ref{fig:combined_training_loss}). This intermediate behaviour reflects the complexity of learning robust representations against two distinct types of perturbations; the model must develop defences that are effective against both gradient-based continuous attacks and probabilistic discrete modifications.
-
-The validation loss demonstrates robust generalization, suggesting that the combined training approach successfully teaches the model to recognize and resist both perturbation types. The convergence pattern indicates that the model learns to balance the competing objectives of maintaining nominal performance while developing comprehensive adversarial defences.
-
-Notably, the final validation loss values are competitive with single-method adversarial training and even surpass pure PIP training. This is an indication that the combined approach does not sacrifice overall performance for broader robustness. It furthermore suggests that the two perturbation types target complementary aspects of the model's decision boundaries, allowing for more comprehensive defence development.
-
-The training efficiency appears reasonable, with convergence achieved within a similar time frame to single-method approaches. This efficiency is particularly important given the increased computational complexity of generating both types of adversarial examples during training.
-
-
-Figure \ref{fig:joint_training_crossing} shows that the adversarially trained PIP-PGD model, with an AUC of $0.958$ against nominal inputs, closely matches the baseline AUC for nominal inputs ($AUV = 0.965$). It also demonstrates robustness across PGD ($AUC = 0.952$), PIP ($AUC = 0.960$), and itself ($AUC = 0.955$). Compared to the nominal-trained model on PIP-PGD perturbed data ($AUC = 0.928$), the PIP-PGD model achieves consistently strong performance across all tested scenarios.
+Figure \ref{fig:joint_training_crossing} shows that the adversarially trained PIP-PGD model, with an AUC of $0.958$ against nominal inputs, closely matches the baseline AUC for nominal inputs ($AUC = 0.965$). It also demonstrates robustness across PGD ($AUC = 0.952$), PIP ($AUC = 0.960$), and itself ($AUC = 0.955$). Compared to the nominal-trained model on PIP-PGD perturbed data ($AUC = 0.928$), the PIP-PGD model achieves consistently strong performance across all tested scenarios.
 
 
 
+
+\FloatBarrier
 \section{Transferability and Cross-Robustness}
 
 This section concludes the evaluation of PIP by assessing the transferability and cross-robustness of adversarial training strategies, with a focus on the combined PIP-PGD attack. By analysing the interplay of \textit{iteration count} and \textit{sharpness} in PIP’s variability and assessing robustness across diverse attack scenarios, it is demonstrated how the hybrid approach balances efficacy and generalization.
@@ -323,7 +291,7 @@ This section concludes the evaluation of PIP by assessing the transferability an
 
 \begin{figure}[h]
 \centering
-    \includegraphics[width=12cm]{media/output/sharpness_iterations_scan.pdf}
+    \includegraphics[width=14cm]{media/output/sharpness_iterations_scan.pdf}
     \caption{AUC score matrix of BvsL misidentification for different iteration and sharpness values in the PIP-PGD attack.}
     \label{fig:joint_sharpness_vs_iterarions}
 \end{figure}
