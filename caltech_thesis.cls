@@ -189,7 +189,10 @@
 %
 \makeatletter
 \newcommand{\faculty}{\gdef\@faculty}
-\faculty{Default Faculty}                  % Default is Ph.D.
+\faculty{Default Faculty}     
+
+\newcommand{\group}{\gdef\@group}
+\faculty{Default Group}    
 
 \newcommand{\university}{\gdef\@university}
 \university{RWTH Aachen University}     % Default is Caltech
@@ -234,8 +237,10 @@
      \@copymonth \ \@copyyear {\vfill}
      \authorskip
      {\footnotesize prepared at the} \par
+     {\scshape \large \@group} \miniskip
+     {\footnotesize submitted to the} \par
      {\scshape \large \@faculty} \par
-     \MakeUppercase{\@university} \par
+     of the \MakeUppercase{\@university} \par
      \authorskip
      
      % ---------- Supervisor / second examiner (NEW) ----------

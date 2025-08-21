@@ -1,4 +1,4 @@
-\chapter{Conclusion}
+\chapter{Conclusion and Outlook}
 
 This thesis has introduced PIP, specifically designed for discrete features in particle physics applications. Applied to the DeepJet flavour tagging algorithm used in CMS, this work demonstrates how to develop a robustness against vulnerabilities in state-of-the-art machine learning models that were previously disregarded.
 
@@ -11,8 +11,6 @@ Adversarial training experiments show that models trained against only one attac
 Beyond the specific application to DeepJet, this work contributes to the broader field of adversarial machine learning by suggesting a general framework for attacking discrete features that can be adapted to other scientific domains. The successful combination of continuous and discrete attacks demonstrates the importance of considering multiple perturbation modalities in robustness evaluation, particularly relevant for scientific applications involving mixed data types.
 
 \newpage
-
-\section*{Limitations and outlook}
 
 While PIP offers a robust method that can be applied in conjunction with existing continuous attack methods, several improvements could enhance its effectiveness. The current implementation does not account for relative feature scaling in the same way that PGD uses feature-specific scaling factors. Incorporating relative scaling based on feature importance or sensitivity has the potential to enhance the efficacy while maintaining physical realism.
 

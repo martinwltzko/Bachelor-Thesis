@@ -49,7 +49,8 @@
 \title{\textbf{A probabilistic approach for adversarial perturbation of integer-constraint features for Jet-Flavour Tagging Algorithms in the CMS Experiment}}
 \author{Martin Waletzko}
 
-\faculty{Physics Institute III A}      % Faculty name
+\group{Physics Institute III A}
+\faculty{Faculty of Mathematics, Computer Science and Natural Science}      % Faculty name
 \university{RWTH Aachen University}    % Institution name
 %\unilogo{caltech.png}                                 % Institution logo
 \copyyear{2025}  % Year (of graduation) on diploma
@@ -60,10 +61,6 @@
 
 
 \maketitle
-
-\begin{acknowledgements}
-[Add acknowledgements here. If you do not wish to add any to your thesis, you may simply add a blank titled Acknowledgements page.]
-\end{acknowledgements}
 
 % Abstract
 \begin{abstract}
@@ -77,6 +74,20 @@ This thesis acknowledges the use of various artificial intelligence technologies
 }}
 
 \end{abstract}
+
+\begin{acknowledgements}
+
+I would like to take this opportunity to express my sincere gratitude to all those who supported and assisted me throughout the preparation of this thesis.
+
+My deepest thanks go to Prof. Dr. Alexander Schmidt for providing me with the opportunity to prepare this thesis under his supervision, and for his trust while I was new to deep learning. His guidance and encouragement made it possible to pursue this work on adversarial robustness and jet-flavour tagging to completion.
+
+I am also grateful to Prof. Dr. Johannes Erdmann for kindly agreeing to serve as the second examiner of this thesis and for his constructive feedback.
+
+Moreover, I would like to thank Ulrich Willemsen and Alexander Jung their assistance, insightful discussions, and the supportive working environment. In particular, I am thankful for their patience, valuable ideas, and technical support.
+
+Finally, I would like to thank my family and friends for their encouragement and careful proofreading
+
+\end{acknowledgements}
 
 \tableofcontents
 \listoffigures
@@ -152,12 +163,6 @@ Quantifies the \emph{statistical difference} between original and perturbed feat
 \label{tab:evaluation_metrics}
 \end{table}
 
-\begin{figure}[h]
-\centering
-    \includegraphics[width=13cm]{media/output/roc_bvsl_intpgd_failure.pdf}
-    \caption{ROC Curve for FGSM applied to nominal training for the entire input spectrum.}
-    \label{fig:intpgd_roc}
-\end{figure}
 
 
 \begin{figure}[h]
@@ -165,6 +170,14 @@ Quantifies the \emph{statistical difference} between original and perturbed feat
     \includegraphics[width=13cm]{media/output/intpgd_loss_validation.pdf}
     \caption{Training and validation loss for FGSM applied to the entire input spectrum training.}
     \label{fig:intpgd_train}
+\end{figure}
+
+
+\begin{figure}[h]
+\centering
+    \includegraphics[width=13cm]{media/output/roc_bvsl_intpgd_failure.pdf}
+    \caption{ROC Curve for FGSM applied to nominal training for the entire input spectrum.}
+    \label{fig:intpgd_roc}
 \end{figure}
 
 \include{appendix/input_features}
