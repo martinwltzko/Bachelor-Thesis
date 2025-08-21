@@ -50,7 +50,7 @@ This progressive degradation highlights two important aspects of PGD attacks. Th
 \begin{figure}[h]
 \centering
     \includegraphics[width=15cm]{media/output/roc_bvsl_pgd_its_1_2_3.pdf}
-    \caption{ROC curves for BvsL misidentification. Nominal trained model tested against one, two, and three iterations of PGD attacks with $\epsilon=0.1$.}
+    \caption{ROC curves for BvsL misidentification. Nominal trained model tested against one, two, and three iterations of PGD attacked inputs with $\epsilon=0.1$.}
     \label{fig:pgd_iterations}
 \end{figure}
 
@@ -62,7 +62,7 @@ Notably, the training process achieves stable convergence despite the adversaria
 \centering
     
     \includegraphics[width=15cm]{media/output/pgd_loss_validation.pdf}
-    \caption{Training and validation loss for a PGD(1) trained with a magnitude of $\epsilon=0.1$ for up to 30 epochs.}
+    \caption{Training and validation loss for a PGD(1) trained model with a magnitude of $\epsilon=0.1$ for up to 30 epochs.}
     \label{fig:pgd_loss_curve}
 \end{figure}
 
@@ -71,7 +71,7 @@ A PGD trained model offers robustness across PGD inferred data ($AUC=0.955$), wh
 \begin{figure}[h]
 \centering
     \includegraphics[width=15cm]{media/output/roc_bvsl_pgd_perms.pdf}
-    \caption{ROC curves for BvsL misidentification for PGD across all combinations of training and testing scenarios with one iteration and a magnitude of $\epsilon=0.1$.}
+    \caption{ROC curves for BvsL misidentification for a PGD(1) and nominal trained model tested against nominal or PGD(1) perturbed inputs with a magnitude of $\epsilon=0.1$.}
     \label{fig:pgd_trained}
 \end{figure}
 
@@ -130,7 +130,7 @@ The comparison of single and double-iteration for PIP attacks — as seen in fig
 \begin{figure}[H]
 \centering
     \includegraphics[width=15cm]{media/output/roc_bvsl_intprob_sharpness.pdf}
-    \caption{ROC curves for BvsL misidentification of the nominal trained model tested against different sharpness values in the PIP attack at one iteration.}
+    \caption{ROC curves for BvsL misidentification of the nominal trained model tested against different sharpness values for the PIP attack at one iteration.}
     \label{fig:intprob_rocs_vs_sharpness}
 \end{figure}
 
@@ -157,7 +157,7 @@ Figure \ref{fig:intprob_training} shows the training dynamics for PIP with sharp
 \begin{figure}[h]
 \centering
     \includegraphics[width=15cm]{media/output/intprob_loss_validation.pdf}
-    \caption{Training and validation loss for an PIP trained model over 30 epochs with a sharpness of 1.}
+    \caption{Training and validation loss for a PIP trained model over 30 epochs with a sharpness of 1.}
     \label{fig:intprob_training}
 \end{figure}
 
@@ -170,7 +170,7 @@ Figure \ref{fig:intprob_rocs_training} shows that the PIP-trained model achieves
 \begin{figure}[h]
 \centering
     \includegraphics[width=15cm]{media/output/roc_bvsl_intprob_permutations.pdf}
-    \caption{ROC curves for BvsL misidentification for PIP across all combinations of training and testing scenarios at one iteration with $s=1$.}
+    \caption{ROC curves for BvsL misidentification for a PIP(1) and nominal trained model tested against nominal or PIP(1) perturbed inputs with a sharpness of $s=1.0$.}
     \label{fig:intprob_rocs_training}
 \end{figure}
 
@@ -215,7 +215,7 @@ The histograms between one and two iterations for \texttt{jet\_eta} (float) and 
     \label{fig:middle}
   \end{subfigure}\hfill
 
-  \caption{Histogram of input perturbation for discrete-valued \texttt{Cpfcan\_VTX\_ass} for one (left) and two (right) iterations of PIP-PGD compared against nominal inputs.}
+  \caption{Histogram of input perturbation for discrete-valued global \texttt{nsv} for one (left) and two (right) iterations of PIP-PGD compared against nominal inputs.}
   \label{fig:combined_input_vtxAss}
 \end{figure}
 
@@ -245,7 +245,7 @@ Likewise, the AUC score degrades with increasing iterations for the combined PIP
 \begin{figure}[h]
 \centering
     \includegraphics[width=15cm]{media/output/roc_bvsl_combined_iterations.pdf}
-    \caption{AUC score of PIP-PGD for BvsL misidentification for up to 5 iterations with a fixed magnitude of $\epsilon=0.1$ and a sharpness of $s=1$.}
+    \caption{AUC score of PIP-PGD for BvsL misidentification for up to 5 iterations with a fixed magnitude of $\epsilon=0.1$ and a sharpness of $s=1$ tested against the nominal trained model.}
     \label{fig:combined_testing_iterations}
 \end{figure}
 
@@ -253,7 +253,7 @@ Likewise, the AUC score degrades with increasing iterations for the combined PIP
 \begin{figure}[H]
 \centering
     \includegraphics[width=15cm]{media/output/combined_loss_validation.pdf}
-    \caption{Training and validation loss for PIP-PGD(1) with a sharpness of 1 and a magnitude of 0.1, while scaling individual attack features based on an epsilon tensor.}
+    \caption{Training and validation loss for PIP-PGD(1) with a sharpness of $s=1$ and a magnitude of $\epsilon=0.1$, while scaling individual attack features based on an epsilon tensor.}
     \label{fig:combined_training_loss}
 \end{figure}
 
@@ -272,7 +272,7 @@ The training efficiency appears reasonable, with convergence achieved within a s
 \begin{figure}[h]
 \centering
     \includegraphics[width=15cm]{media/output/roc_bvsl_combined_crossing.pdf}
-    \caption{AUC score of PIP-PGD for BvsL misidentification at cross robustness against PGD(1), PIP, nominal, and PIP-PGD itself.}
+    \caption{ROC curves for BvsL misidentification for a PIP-PGD(1) and nominal trained model tested against nominal or PIP-PGD(1) perturbed inputs with $s=1.0$ and $\epsilon=0.1$.}
     \label{fig:joint_training_crossing}
 \end{figure}
 
@@ -292,7 +292,7 @@ This section concludes the evaluation of PIP by assessing the transferability an
 \begin{figure}[h]
 \centering
     \includegraphics[width=15cm]{media/output/sharpness_iterations_scan.pdf}
-    \caption{AUC score matrix of BvsL misidentification for different iteration and sharpness values in the PIP-PGD attack.}
+    \caption{AUC score matrix of BvsL misidentification for different iteration and sharpness values in the PIP-PGD attack tested against the nominal trained model.}
     \label{fig:joint_sharpness_vs_iterarions}
 \end{figure}
 
