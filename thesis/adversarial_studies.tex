@@ -38,12 +38,12 @@ This selective perturbation behaviour stems from the gradient reassessment proce
 \begin{figure}[H]
 \centering
     \includegraphics[width=15cm]{media/output/features/compare/jsd_pgd_iterations_featurewise_hor.pdf}
-    \caption{JSD input similarity development for up to three iterations of the PGD attack with $\epsilon=0.1$ tested against a nomainal trained model.}
+    \caption{JSD input similarity development for up to three iterations of the PGD attack with $\epsilon=0.1$ tested against a nominal trained model.}
     \label{fig:pgd_input_overview}
 \end{figure}
 \FloatBarrier
 \newpage
-\paragraph{Attack:} Figure \ref{fig:pgd_iterations} illustrates the impact of multiple PGD iterations on the BvsL discrimination task. The baseline nominal performance (AUC = 0.965) serves as the reference point against which attack efficacy is measured. The single-iteration PGD(1) attack achieves an AUC of approximately $0.937$, representing a clear reduction in performance. This initial attack demonstrates that even minimal adversarial perturbation can compromise the classifier's discriminative power. The two-iteration PGD(2) attck yields the same AUC score as PGD(1), while the three-iteration variant  pushes the AUC slightly down to approximately 0.936.
+\paragraph{Attack:} Figure \ref{fig:pgd_iterations} illustrates the impact of multiple PGD iterations on the BvsL discrimination task. The baseline nominal performance (AUC = 0.965) serves as the reference point against which attack efficacy is measured. The single-iteration PGD(1) attack achieves an AUC of approximately $0.937$, representing a clear reduction in performance. This initial attack demonstrates that even minimal adversarial perturbation can compromise the classifier's discriminative power. The two-iteration PGD(2) attack yields the same AUC score as PGD(1), while the three-iteration variant  reduces the AUC slightly to approximately 0.936.
 
 This progressive degradation highlights two important aspects of PGD attacks. The iterative nature allows for more sophisticated perturbation strategies that can exploit the model's decision boundaries more effectively than single-step methods. Moreover, the diminishing returns observed between iterations 2 and 3 suggest that the attack approaches a performance floor, beyond which additional iterations provide minimal benefit.
 
@@ -66,7 +66,7 @@ Notably, the training process achieves stable convergence despite the adversaria
     \label{fig:pgd_loss_curve}
 \end{figure}
 
-A PGD trained model offers robustness across PGD inferred data ($AUC=0.955$), while remaining a high AUC score for nominal data ($AUC=0.960$). Compared to the nominal trained model against PGD ($AUC=0.937$), it offers effective defence while staying true nominal performance of ($AUC=0.955$). The corresponding ROC curves are depicted in Figure \ref{fig:pgd_trained}. 
+A PGD trained model offers robustness across PGD inferred data ($AUC=0.955$), while remaining a high AUC score for nominal data ($AUC=0.960$). Compared to the nominal trained model against PGD ($AUC=0.937$), it offers effective defence while staying true nominal performance of ($AUC=0.955$). The corresponding ROC curves are depicted in figure \ref{fig:pgd_trained}. 
 
 \begin{figure}[h]
 \centering
@@ -180,10 +180,9 @@ Figure \ref{fig:intprob_rocs_training} shows that the PIP-trained model achieves
 
 As described in Sec.~\ref{sec:method_combined}, the PIP-PGD attack perturbs floating-point and integer features independently in a single pass. The following analysis examines its effect on input similarity, model performance, and training behaviour.
 
-
 \paragraph{Severity:} The JSD analysis reveals that combined attacks retain stealth characteristics comparable to standalone PIP or PGD attacks, with JSD values ranging from $\mathcal{O}(10^{-3})$ to $\mathcal{O}(10^{-1})$ across the entire attack domain. A detailed list of JSD values for individual features is provided in Appendix \ref{appendix:combined}.
 
-The histograms between one and two iterations for \texttt{jet\_eta} (float) and \texttt{Cpfcan\_VTX\_ass} (integer) is depicted in Figures \ref{fig:combined_input_eta} and \ref{fig:combined_input_vtxAss} respectively. These features were specifically chosen to show the perturbation across discrete and continuous inputs. Their respective JSDs lie approximately within the same order of magnitude.
+The histograms between one and two iterations for \texttt{jet\_eta} (float) and \texttt{nsv} (integer) is depicted in figures \ref{fig:combined_input_eta} and \ref{fig:combined_input_vtxAss} respectively. These features were specifically chosen to show the perturbation across discrete and continuous inputs. Their respective JSDs lie approximately within the same order of magnitude.
 
 \begin{figure}[htbp]
   \centering
