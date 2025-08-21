@@ -161,9 +161,7 @@ Figure \ref{fig:intprob_training} shows the training dynamics for PIP with sharp
     \label{fig:intprob_training}
 \end{figure}
 
-The training loss curve demonstrates visible fluctuations, particularly in comparison to PGD-based training. This instability stems from the discrete nature of PIP perturbations — unlike continuous methods that can produce arbitrarily small perturbations, PIP operates on a finite set of possible integer modifications. This creates less but more pronounced perturbations offering a greater challenge in the training procedure. This instability reflects in the validation loss too, indicating problems to generalize for unseen PIP perturbations. 
-
-Compared to nominal training or PGD, the validation loss slightly exceeds the training loss, suggesting mild adaptation to the lower-severity PIP perturbations \ref{fig:intprob_rocs_training}).
+The training loss curve demonstrates visible fluctuations, particularly in comparison to PGD-based training. This instability stems from the discrete nature of PIP perturbations — unlike continuous methods that can produce arbitrarily small perturbations, PIP operates on a finite set of possible integer modifications. This creates less but more pronounced perturbations offering a greater challenge in the training procedure. This instability reflects in the validation loss too, indicating problems to generalize for unseen PIP perturbations. Compared to nominal training or PGD, the validation loss slightly exceeds the training loss, suggesting mild adaptation to the lower-severity PIP perturbations \ref{fig:intprob_rocs_training}).
 
 Figure \ref{fig:intprob_rocs_training} shows that the PIP-trained model achieves robust performance against PIP-perturbed data, with an AUC of $0.967$, slightly surpassing the nominal-trained baseline ($AUC = 0.965$) by approximately $0.2\%$. When evaluated on nominal data, the model maintains a strong AUC of $0.962$, indicating minimal performance degradation compared to the undisturbed model.
 
@@ -317,16 +315,16 @@ The heatmap highlights the flexibility of PIP: by adjusting iteration count $k$ 
 
 The last section of this thesis focuses on a cross-robustness study between trained and tested models across all previous mentioned adversarial attacks. For the sake of simplicity, a sharpness of $s=1$, PGD magnitude of $\epsilon=0.1$, and only one iteration is discussed here.
 
+Figure \ref{fig:cross_robustness} illustrates a key property of adversarial training with integer-based attacks. The model trained on PIP achieves excellent performance against the same attack ($AUC = 0.967$), slightly outperforming the nominal model on unperturbed data ($AUC = 0.965$). This suggests strong adaptation to the characteristic perturbations of probabilistic integer modifications. However, this enhanced robustness is highly specific to the trained attack pattern. When evaluated against other attacks, such as PGD or PIP-PGD, performance degrades noticeably, indicating a form of adversarial overfitting where the model resists a narrow class of perturbations but struggles to generalize.
+
+In contrast, adversarial training with the PIP-PGD strategy yields more balanced robustness across all tested attack scenarios. Although its AUC on the PIP attack is slightly lower than that of models trained solely on PIP or PGD, the combined model exhibits better transferability, maintaining robust performance under both PIP ($AUC = 0.960$) and PGD ($AUC = 0.952$) attacks. This suggests that combined adversarial training mitigates attack-specific overfitting, fostering a more generalizable defence.
+
 \begin{figure}[h]
 \centering
     \includegraphics[width=15cm]{media/cross_robustness.pdf}
     \caption{AUC score for BvsL misidentification for all combinations of adversarial training and adversarial testing between nominal, PGD(1), PIP(1), and joint PIP-PGD(1) attacks with a sharpness of $s=1.0$ and $\epsilon=0.1$ while attributing for individual features.}
     \label{fig:cross_robustness}
 \end{figure}
-
-Figure \ref{fig:cross_robustness} illustrates a key property of adversarial training with integer-based attacks. The model trained on PIP achieves excellent performance against the same attack ($AUC = 0.967$), slightly outperforming the nominal model on unperturbed data ($AUC = 0.965$). This suggests strong adaptation to the characteristic perturbations of probabilistic integer modifications. However, this enhanced robustness is highly specific to the trained attack pattern. When evaluated against other attacks, such as PGD or PIP-PGD, performance degrades noticeably, indicating a form of adversarial overfitting where the model resists a narrow class of perturbations but struggles to generalize.
-
-In contrast, adversarial training with the PIP-PGD strategy yields more balanced robustness across all tested attack scenarios. Although its AUC on the PIP attack is slightly lower than that of models trained solely on PIP or PGD, the combined model exhibits better transferability, maintaining robust performance under both PIP ($AUC = 0.960$) and PGD ($AUC = 0.952$) attacks. This suggests that combined adversarial training mitigates attack-specific overfitting, fostering a more generalizable defence.
 
 Models trained solely on PGD struggle to achieve robustness against integer-based attacks, with an AUC of  $\le0.952$, though they remain stable against PGD perturbations.
 
