@@ -3,7 +3,7 @@
 
 In HEP, applying adversarial attacks is challenging due to the nature of the data. Collider events or detector readouts are not simple fixed-size vectors or continuous values — they often involve structured or discrete inputs. This means that naive perturbations which violate those symmetries or feature constraints might be non-physical and thus easily recognized as invalid. In short, the allowed adversarial perturbation in HEP are limited by physical realism in a way typical image perturbations are not.
 
-This chapter outlines the methodological framework of this thesis, designed to systematically investigate adversarial attacks for discrete input features on the DeepJet model. The approach begins with a detailed description of the dataset and feature sets used for training and testing, followed by the evaluation metrics and the adversarial threat model considered. Subsequently, various attack strategies are presented. Starting with conventional gradient-based methods applied to continuous inputs, progressing to novel techniques that account for the discrete nature of certain features. The chapter concludes by exploring a combined approach that integrates these strategies to enhance the robustness analysis of the model.
+This chapter outlines the methodological framework of this thesis, designed to systematically investigate adversarial attacks for discrete input features on the DeepJet model. The approach begins with a detailed description of the dataset and feature sets used for training and testing. Following, the evaluation metrics and the adversarial threat model get considered. Subsequently, various attack strategies are presented: Starting with conventional gradient-based methods applied to continuous inputs, progressing to novel techniques that account for the discrete nature of certain features. The chapter concludes by exploring a combined approach that integrates these strategies to enhance the robustness analysis of the model.
 
 
 \section{Dataset}
@@ -15,7 +15,7 @@ summary for each feature group used in DeepJet. An overview of all features and 
 
 
 \begin{itemize}
-  \item \textbf{Global features.} Jet-level observables and context summarising the jet and its environment. It includes continuous features such as basic kinematics (\texttt{jet\_pt}, \texttt{jet\_eta}) and other variables from the earlier CSV algorithm (e.g. \texttt{trackSumJetEtRatio}, \texttt{trackSumJetDeltaR}). It has discrete values for counts of reconstructed constituents/vertices (e.g. \texttt{nsv}, \texttt{npv}).
+  \item \textbf{Global features.} Jet-level observables and context summarising the jet and its environment. It includes continuous features such as basic kinematics (\texttt{jet\_pt}, \texttt{jet\_eta}) and other variables from the earlier CSV algorithm (e.g. \texttt{trackSumJetEtRatio}, \texttt{trackSumJetDeltaR}). It has discrete values for counts of reconstructed constituents (e.g. \texttt{nsv}, \texttt{npv}).
   \item \textbf{Charged PF candidates (25 per jet).} Consists of reconstructed charged particles (mostly charged hadrons and leptons) linked to the primary vertex by tracks. Contains mostly, continuous features with per-track kinematics, geometry relative to the jet/vertices, and impact parameters (e.g. \texttt{Cpfcan\_ptrel},  \texttt{Cpfcan\_deltaR}) that encode displacement from the PV. Integer-valued features are included as well through reconstruction/quality indicators (e.g. \texttt{Cpfcan\_VTX\_ass}, \texttt{Cpfcan\_quality}).
   \item \textbf{Neutral PF candidates (25 per jet).} Reconstructed neutral particles within the jet (photons and neutral hadrons). Features describe neutral energy shares and positions relative to the jet (e.g. \texttt{Npfcan\_ptrel}, \texttt{Npfcan\_deltaR}). Includes integer based features with per-candidate flags (e.g. \texttt{Npfcan\_HadFrac}, \texttt{Npfcan\_isGamma}).
   \item \textbf{Secondary vertices (4 per jet).} Grouped as displaced vertices formed from subsets of charged tracks, typically from heavy-flavour hadron decays. Features include track count (\texttt{sv\_ntracks}) and SV kinematics (e.g. \texttt{sv\_pt}, \texttt{sv\_mass}).
@@ -87,7 +87,7 @@ g & jets containing no b or c hadrons (initiated by gluon) \\
 \label{tab:jet_categories}
 \end{table}
 
-For the application in physics analyses, the outputs are often used to compute discriminators, which help to distinguish between two of the broader categories B, C and L. The definitions of the BvsL, CvsB and CvsL discriminators are given below (\ref{eq:bvsl}), (\ref{eq:cvsb}), (\ref{eq:cvsl}). During this thesis the BvsL discriminator is used as the primary metric for evaluation of the DeepJet classifier's performance against adversarial attacks. BvsL distinguishes bottom quark jets ($b$, $bb$, $b_{\text{lep}}$) from light-flavour jets (uds, g) and is critical in many high-energy physics analyses, such as those involving Higgs boson or top quark decays, where bottom jets are key signatures. By targeting BvsL, one can assess the classifier’s robustness in a scenario that is both highly relevant to physics applications and sensitive to adversarial manipulations, as misclassifying bottom jets as light-flavour jets could significantly impact analysis outcomes. Focusing on BvsL, furthermore, allows for a streamlined evaluation of adversarial efficacy, providing clear insights into the classifier’s vulnerabilities while aligning with the needs of precision physics measurements.
+For the application in physics analyses, the outputs are often used to compute discriminators, which help to distinguish between two of the broader categories B, C and L. The definitions of the BvsL, CvsB and CvsL discriminators are given below in (\ref{eq:bvsl}), (\ref{eq:cvsb}), (\ref{eq:cvsl}). During this thesis the BvsL discriminator is used as the primary metric for evaluation of the DeepJet classifier's performance against adversarial attacks. BvsL distinguishes bottom quark jets ($b$, $bb$, $b_{\text{lep}}$) from light-flavour jets (uds, g) and is critical in many high-energy physics analyses, such as those involving Higgs boson or top quark decays, where bottom jets are key signatures. By targeting BvsL, one can assess the classifier’s robustness in a scenario that is both highly relevant to physics applications and sensitive to adversarial manipulations, as misclassifying bottom jets as light-flavour jets could significantly impact analysis outcomes. Focusing on BvsL, furthermore, allows for a streamlined evaluation of adversarial efficacy, providing clear insights into the classifier’s vulnerabilities while aligning with the needs of precision physics measurements.
 
 \begin{equation}
 \begin{split}
@@ -136,8 +136,9 @@ The TPR measures the fraction of positive instances correctly identified by the 
 
 These metrics form the basis of the Receiver Operating Characteristic (ROC) curve, a graphical tool used to evaluate the trade-off between the classifier’s sensitivity (TPR) and its false positive rate (FPR) \cite{hoecker2009tmvatoolkitmultivariate}. The ROC curve plots TPR on the y-axis against FPR on the x-axis, with the FPR often logarithmically scaled to emphasize small values. Each point on the ROC curve corresponds to a different classification threshold, allowing visualization of how the model balances correctly identifying positive instances (e.g., $b$-jets) against incorrectly tagging negative instances (e.g., non-$b$-jets).
 
-A key metric derived from the ROC curve is the Area Under the Curve (AUC) score, computed by integrating the ROC curve. The AUC quantifies the overall performance of the classifier across all possible thresholds. An AUC score of 1.0 indicates a perfect classifier achieving maximum TPR with no false positives, while an AUC of 0.5 corresponds to a random classifier (equivalent to a coin toss) with no discriminative power. In practice, the AUC is widely used as a single, comprehensive metric to compare different models or assess improvements in a given model, particularly in tasks where one class (e.g., $b$-jets) is significantly rarer than the other.
+A key metric derived from the ROC curve is the Area Under the Curve (AUC) score, computed by integrating the ROC curve \cite{hoecker2009tmvatoolkitmultivariate}. The AUC quantifies the overall performance of the classifier across all possible thresholds. An AUC score of 1.0 indicates a perfect classifier achieving maximum TPR with no false positives, while an AUC of 0.5 corresponds to a random classifier (equivalent to a coin toss) with no discriminative power. In practice, the AUC is widely used as a single, comprehensive metric to compare different models or assess improvements in a given model, particularly in tasks where one class (e.g., $b$-jets) is significantly rarer than the other.
 
+\newpage
 \subsection{Input similarity}
 \label{sec:input_similarity}
 
@@ -159,7 +160,7 @@ D_{KL}=\sum_{x\in\chi} P(x) \log{\frac{P(x)}{Q(x)}}
 \label{eq:kullback-leibler}.
 \end{equation}
 
-A low JSD (close to zero) indicates that the perturbed inputs are almost indistinguishable from nominal inputs in those one-dimensional projections, even though they may be arranged so as to fool the ML  model\footnote{This can happen through intentional mismodelling where bins get switched while retaining their local scale and is not in the scope of this thesis.} \cite{saala2025enforcingfundamentalrelationsadversarial}. This is useful to assess how \textit{stealthy} a given attack is in a statistical sense. For instance, a study found that for certain attacks the average JSD for key kinematic distributions is on the order of $\mathcal{O}(10^{-3})$, indicating very minor differences \cite{saala2025enforcingfundamentalrelationsadversarial}. 
+A low JSD (close to zero) indicates that the perturbed inputs are almost indistinguishable from nominal inputs in those one-dimensional projections, even though they may be arranged so as to fool the ML  model\footnote{This can happen through intentional mismodelling where bars get switched while retaining their local scale and is not in the scope of this thesis.} \cite{saala2025enforcingfundamentalrelationsadversarial}. This is useful to assess how \textit{stealthy} a given attack is in a statistical sense. For instance, a study found that for certain attacks the average JSD for key kinematic distributions is on the order of $\mathcal{O}(10^{-3})$, indicating very minor differences \cite{saala2025enforcingfundamentalrelationsadversarial}. 
 
 Equations (\ref{eq:jsd}) and (\ref{eq:kullback-leibler}) formalize the definitions of JSD and KL divergence. The bins for the JSD calculations were chosen separately between continuous and discrete input features, where continuous bins are based on the Freedman-Diaconis rule \cite{Freedman1981} and the binning for discrete values correspond to a linear range between feature minima/maxima with a step size of one. In essence, JSD provides a single summary number to quantify input similarity, complementing other measures used such as differences in correlation matrices, visual inspection of feature histograms, etc. Going forward, the JSD is presented for various features under different attack scenarios, to confirm that the proposed adversarial attack strategies meet the design criterion of stealthiness.
 
@@ -171,7 +172,7 @@ The attacker is not assumed to be able to change the model on the fly. All attac
 
 
 \section{Experimental Setup:}
-All methods in this section use the standard DeepJet neural network architecture for jet flavour identification (see \ref{sec:DeepJet}) as the victim model. The training/testing procedures were carried out over the course of 30 epochs with a batch size of 1024. The backpropagation was based on the Adam optimizer (a variant of stochastic gradient descent) using an initial learning rate on the order of $0.0001$. 
+All methods in this section use the standard DeepJet neural network architecture for jet-flavour identification (see \ref{sec:DeepJet}) as the victim model. The training/testing procedures were carried out over the course of 30 epochs with a batch size of 1024. The backpropagation was based on the Adam optimizer (a variant of stochastic gradient descent) using an initial learning rate on the order of $0.0001$. 
 Masks $\mathcal{M_{\text{float}}}$, $\mathcal{M_{\text{int}}}$, and $\mathcal{M_{\text{int}}^*}$ were used to distinguish between continuous (floating-point valued), discretely mapped, and true discrete input features. 
 $\mathcal{M_{\text{float}}}$ contains kinematic quantities like track momentum and impact parameter, $\mathcal{M_{\text{int}}}$ includes features that nominally should not be targeted by traditional adversarial attacks in DeepJet, such as hit multiplicities or track counts or derived features from binned distributions (e.g. PUPPI weights). As $\mathcal{M_{\text{int}}}$ is primarily used to avoid the manipulation of undesired input features independent of the actual data type, a sub-set $\mathcal{M_{\text{int}}^*}\subset\mathcal{M_{\text{int}}}$ of true integer-based values was used for the scope of this thesis. 
 
@@ -192,19 +193,19 @@ Having defined the evaluation metrics and having also discussed how the dataset 
 \subsection{FGSM on Continuous Inputs}
 \label{sec:fgsm_methodology}
 
-First, the \textit{standard way} of working with simple adversarial attacks in \texttt{b-hive} to date, perturbing only the continuous-valued inputs, is discussed. Integer-valued features are fixed (effectively ignored by the attack) via the mask $\mathcal{M_{\text{float}}}$. The update rule for each feature $x_i$ is given by Equation (\ref{eq:fgsm}):
+First, the \textit{standard way} of working with simple adversarial attacks in \texttt{b-hive} to date is discussed — perturbing only the continuous-valued inputs. Integer-valued features are fixed (effectively ignored by the attack) via the mask $\mathcal{M_{\text{float}}}$. The update rule for each feature $x_i$ is given by Equation (\ref{eq:fgsm}):
 
 \begin{equation}
 x_i^{\text{adv,float}} = 
     \begin{cases}
-        x_i + \epsilon \cdot \varepsilon_{ii} \cdot \operatorname{sign}\!\bigl(\nabla_{x_i} J(\Theta, x, y)\bigr), & x_i\in\mathcal{M}_{\text{float}} \\[6pt]
+        x_i + \epsilon \cdot \varepsilon_{ind} \cdot \operatorname{sign}\!\bigl(\nabla_{x_i} J(\Theta, x, y)\bigr), & x_i\in\mathcal{M}_{\text{float}} \\[6pt]
         x_i, & \text{otherwise},
     \end{cases}
 \label{eq:fgsm}
 \end{equation}
 
 where $J(\Theta, x, y)$ is the loss function of the model with parameters $\Theta$ on input $x$ with true label $y$. 
-Here, $\varepsilon_{ii}$, is not a fixed constant but rather a tensor attributing for the relative scaling of individual features, which is globally scaled by a magnitude $\epsilon$.  
+Here, $\varepsilon_{ind}$, is not a fixed constant but rather a tensor attributing for the relative scaling of individual features, which is globally scaled by a magnitude $\epsilon$.  
 In words, small steps of a relative size $\epsilon$ are applied in the direction of the gradient's sign for each continuous feature, while leaving discrete features unchanged. This formulation is the same used in previous studies of adversarial attacks on DeepJet models \cite{CMS-DP-2024-020}, and implements a per-feature perturbation of maximum allowed size $\epsilon$ in the direction that most increases the loss.
 
 %----------------------------------------------------------------------
@@ -213,16 +214,16 @@ In words, small steps of a relative size $\epsilon$ are applied in the direction
 Next, the discrete features in the FGSM attack are included without special treatment – essentially pretending that all inputs are continuous. In this naive approach, the mask is dropped and FGSM is applied “as-is” across the entire feature vector, including integer-valued observables. The update rule simplifies to Equation (\ref{eq:fgsm_naive_int}) for every feature:
 
 \begin{equation}
-x_i^{\text{adv,int}} = x_i + \epsilon \cdot \varepsilon_{ii} \cdot \operatorname{sign}\!\bigl(\nabla_{x_i} J(\Theta, x, y)\bigr),
+x_i^{\text{adv,int}} = x_i + \epsilon \cdot \varepsilon_{ind} \cdot \operatorname{sign}\!\bigl(\nabla_{x_i} J(\Theta, x, y)\bigr).
 \label{eq:fgsm_naive_int}
 \end{equation}
 
-This direct application allows the gradient to perturb integer features by a fractional amount. For example, if $x_i$ represents a count in a simplified case where $\varepsilon_{ii}\equiv1$, and the gradient $\nabla_{x_i} J$ is positive, then Equation (\ref{eq:fgsm_naive_int}) would increment the count by $\epsilon$, potentially resulting in a non-integer value. Such values are non-physical, since one cannot have fractional tracks; similarly, a negative perturbation could result in a count going below zero (e.g. $0-0.2=-0.2$ tracks). These invalid states illustrate the main drawback of the naive method. Consequently, the naive approach fails dramatically at generalizing for the perturbed input set, which can be seen in figure \ref{fig:intpgd_train}. 
+This direct application allows the gradient to perturb integer features by a fractional amount. For example, if $x_i$ represents a count in a simplified case where $\varepsilon_{ind}\equiv1$, and the gradient $\nabla_{x_i} J$ is positive, then Equation (\ref{eq:fgsm_naive_int}) would increment the count by $\epsilon$, potentially resulting in a non-integer value. Such values are non-physical, since one cannot have fractional tracks; similarly, a negative perturbation could result in a count going below zero (e.g. $0-0.2=-0.2$ tracks). These invalid states illustrate the main drawback of the naive method. Consequently, the naive approach fails dramatically at generalizing for the perturbed input set, which can be seen in figure \ref{fig:intpgd_train}. 
 
 
 \subsection{Projected Gradient Descent}
 
-While FGSM provides a quick, one–shot probe of model vulnerability, it often underestimates the true  worst-case loss increase because it is restricted to a single gradient step.  Projected Gradient Descent (PGD) extends FGSM into a multi-step procedure that iteratively walks the input towards regions of higher loss while re-projecting the perturbed sample back into an $\ell_{\infty}$–ball of radius $\varepsilon:=\epsilon\cdot\varepsilon_{ii}$ around the original input. This makes PGD the de facto "gold standard" white-box adversary for continuous domains \cite{madry2019deeplearningmodelsresistant}.
+While FGSM provides a quick, one–shot probe of model vulnerability, it often underestimates the true  worst-case loss increase because it is restricted to a single gradient step. PGD extends FGSM into a multi-step procedure that iteratively walks the input towards regions of higher loss while re-projecting the perturbed sample back into an $\ell_{\infty}$–ball of radius $\varepsilon:=\epsilon\cdot\varepsilon_{ind}$ around the original input. This makes PGD the de facto "gold standard" white-box adversary for continuous domains \cite{madry2019deeplearningmodelsresistant}.
 
 For each iteration $t\!=\!0,\dots,k{-}1$ only the floating-point coordinates
 $x_i\!\in\!\mathcal{M}_{\text{float}}$ are updated,
@@ -259,17 +260,17 @@ p_i &= \Biggl[\min\!\Bigl(1,\,
 u_i \sim \operatorname{Bernoulli}(p_i), \\[4pt]
 x_i^{\text{adv}} &= 
     \begin{cases} 
-    x_i + u_i\cdot \operatorname{sign}(\nabla_{x_i} \mathcal{L}), & x_i\in\mathcal{M}_{\text{int}^*} \\
+    x_i + u_i\cdot \operatorname{sign}(\nabla_{x_i} \mathcal{L}), & x_i\in\mathcal{M}_{\text{int}}^* \\
     x_i, & \text{otherwise},
     \end{cases}
 \end{aligned}
 \label{eq:intprob}
 \end{equation}
 
-where $\mathcal{L}=J(\Theta,x,y)$ is the loss and $\max{\nabla_{x_i} \mathcal{L}}$ denotes the maximum absolute gradient among all features (or specifically among integer features – the formulation can be restricted to the $\mathcal{M}_{\text{int}}^*$ subset). A small positive constant $c=10^{-8}$ is added to the denominator to avoid division by zero issues. In practice this has a negligible effect though. The term $p_i$ is essentially a normalized and rescaled version of the gradient magnitude for feature $i$. After dividing by the global maximum gradient, it is capped to $1$, and then raised to a power $s$ (the \textit{sharpness} hyperparameter)—thus $p_i \in [0,1]$. A Bernoulli random variable $u_i\in\{0,1\}$ is then drawn with the success probability $p_i$. If $u_i=1$, the feature $i$ is then perturbed by adding or subtracting one unit in the direction of the gradient's sign. If $u_i=0$, the feature is left unchanged. By construction, this produces an integer adversarial example for integer features, since only whole units get added or subtracted.
+where $\mathcal{L}=J(\Theta,x,y)$ is the loss and $\max{\nabla_{x_i} \mathcal{L}}$ denotes the maximum absolute gradient among all features (or specifically among integer features – the formulation can be restricted to the $\mathcal{M}_{\text{int}}^*$ subset). A small positive constant $c=10^{-8}$ is added to the denominator to avoid division by zero issues. In practice this has a negligible effect though. The term $p_i$ is essentially a normalized and rescaled version of the gradient magnitude for feature $i$. After dividing by the maximum gradient of each batch, it is capped to $1$, and then raised to a power $s$ (the \textit{sharpness} hyperparameter)—thus $p_i \in [0,1]$. A Bernoulli random variable $u_i\in\{0,1\}$ is then drawn with the success probability $p_i$. If $u_i=1$, the feature $i$ is then perturbed by adding or subtracting one unit in the direction of the gradient's sign. If $u_i=0$, the feature is left unchanged. By construction, this produces an integer adversarial example for integer features, since only whole units get added or subtracted.
 
 To build intuition, consider $s=1$ initially. Then $p_i$ is directly proportional to 
-$\nabla_{x_i} \mathcal{L}$. In this case, each integer feature is flipped with probability proportional to how sensitive the model’s loss is to that feature. If a feature’s gradient is very small relative to others, its flip probability will be near zero, meaning it is very unlikely to waste perturbation budget on a feature that doesn’t affect the outcome. Contrary, if a feature has the largest gradient, it gets $p\approx1$ and will almost certainly be flipped. Introducing the sharpness parameter $s>0$ allows to adjust this distribution. If $s>1$, then probabilities are raised to a higher power, which sharpens the distribution: features with $P_i<1$ will have their probability pushed lower and any feature that was at the maximum (with raw probability 1) remains at 1. Thus, higher $s$ makes PIP more aggressively focus on the top-gradient features (many low-gradient features will effectively get probability nearly 0). Conversely, if $0<s<1$, the distribution flattens: even features with smaller gradients get a relatively higher chance to flip. Tuning $s$ thus controls how many integer features on average will be perturbed in one attack instance. A larger $s$ yields sparser attacks (fewer features changed, targeting only the most “salient” ones), while a smaller $s$ yields more widespread changes. In this study, PIP gets applied across a range of $s$ values to examine the sensitivity.
+$\nabla_{x_i} \mathcal{L}$. In this case, each integer feature is flipped with probability proportional to how sensitive the model’s loss is to that feature. If a feature’s gradient is very small relative to others, its flip probability will be near zero, meaning it is very unlikely to waste perturbation budget on a feature that doesn’t affect the outcome. Contrary, if a feature has the largest gradient, it gets $p\approx1$ and will almost certainly be flipped. Introducing the sharpness parameter $s>0$ allows to adjust this distribution. If $s>1$, then probabilities are raised to a higher power, which sharpens the distribution: features with $p_i<1$ will have their probability pushed lower and any feature that was at the maximum (with raw probability 1) remains at 1. Thus, higher $s$ makes PIP more aggressively focus on the top-gradient features (many low-gradient features will effectively get probability nearly 0). Conversely, if $0<s<1$, the distribution flattens: even features with smaller gradients get a relatively higher chance to flip. Tuning $s$ thus controls how many integer features on average will be perturbed in one attack instance. A larger $s$ yields sparser attacks (fewer features changed, targeting only the most “salient” ones), while a smaller $s$ yields more widespread changes. In this study, PIP gets applied across a range of sharpness values to examine the sensitivity.
 
 Another important implementation detail is the randomness in PIP. Because $u_i$ is drawn from a Bernoulli distribution, each attack realization can be different, even for the same input and same model. This stochasticity matches the discrete nature of the problem—integers change in whole steps—but it requires reproducibility for fair evaluation and reproducible training. This is ensured through seeding in b-hive and allows to debug and analyse the attack behaviour reliably.
 
@@ -283,13 +284,13 @@ Similar to FGSM, PIP allows an iterative application offering a more nuanced att
 \section{Probabilistic Integer-Perturbed Projected Gradient Descent}
 \label{sec:method_combined}
 
-Probabilistic Integer-Perturbed Projected Gradient Descent (PIP-PGD) is a composite attack of PGD and PIP perturbs floating-point and integer features independently, acting on a broader spectrum of the input domain. This attack incorporates PGD's efficacy on continuous spaces with PIP's discrete probabilistic nature. In this context "PGD(1)" will refer to a single-step FGSM, while higher numbered PGD($k$) would mean $k$ iterative steps on the continuous features. Likewise, these steps get also applied to PIP, where the same approach is used, e.g. PIP($k$) corresponds to $k$ individual PIP attacks, where after each iteration, the updated gradient gets reevaluated. The joint attack can be written as:
+Probabilistic Integer-Perturbed Projected Gradient Descent (PIP-PGD) is a composite attack of PGD and PIP. It perturbs floating-point and integer features independently, acting on a broader spectrum of the input domain. This attack incorporates PGD's efficacy on continuous spaces with PIP's discrete probabilistic nature. In this context "PGD(1)" will refer to a single-step application (i.e. FGSM), while higher numbered PGD($k$) would mean $k$ iterative steps on the continuous features. Likewise, these steps get also applied to PIP, where the same approach is used, i.e. PIP($k$) corresponds to $k$ individual PIP attacks, where after each iteration, the updated gradient gets reevaluated. The joint attack can be written as:
 
 \begin{equation}
 x_i^{\text{adv}} = 
     \begin{cases} 
     x^{\text{adv,float}}_i, & x_i\in\mathcal{M}_{\text{float}} \\[4pt]
-    x^{\text{adv,int}}_i,   & x_i\in\mathcal{M}_{\text{int}^*}   \\[4pt]
+    x^{\text{adv,int}}_i,   & x_i\in\mathcal{M}_{\text{int}}^*   \\[4pt]
     x_i, & \text{otherwise}
     \end{cases}
 \label{eq:joint_attack}
