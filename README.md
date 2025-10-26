@@ -43,6 +43,7 @@ revealing **complementary vulnerabilities** of DeepJet.
 | File | Description |
 |------|-------------|
 | `thesis.pdf` | Full 45-page thesis (methods, experiments, results, and discussion). |
+| `src/*` | Full latex source code of the thesis. |
 
 ---
 
