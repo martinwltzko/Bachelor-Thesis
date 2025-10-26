@@ -54,3 +54,15 @@ revealing **complementary vulnerabilities** of DeepJet.
 - Adversarial ML techniques (FGSM, PGD, custom discrete attacks)
 ---
 
+## License
+
+The text of this thesis is licensed under the **Creative Commons
+Attribution-NonCommercial-NoDerivatives 4.0 International License (CC BY-NC-ND 4.0).**
+
+You are free to share the PDF for personal or academic use, as long as you:
+- credit the author,
+- do not modify the material, and
+- do not use it commercially.
+
+More details: https://creativecommons.org/licenses/by-nc-nd/4.0/
+
